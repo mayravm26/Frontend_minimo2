@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:flutter_application_1/services/user.dart';
+//import 'package:flutter_application_1/models/userModel.dart';
+
+class UserController extends GetxController {
+  final UserService userService = Get.put(UserService());
+
+  // Controladores de texto para la UI
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  // Variables reactivas para la UI
+  var isLoading = false.obs;
+  var errorMessage = ''.obs;
+
+  void logIn() async {
+    // Validación de campos
+    if (usernameController.text.isEmpty || passwordController.text.isEmpty) {
+      Get.snackbar('Error', 'Campos vacíos',
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    print('estoy en el login de usercontroller');
+
+    final logIn = (
+      username: usernameController.text,
+      password: passwordController.text,
+    );
+
+    // Iniciar el proceso de inicio de sesión
+    isLoading.value = true;
+    errorMessage.value = '';
+
+    try {
+      // Llamada al servicio para iniciar sesión
+      final responseData = await userService.logIn(logIn);
+
+      print('el response data es:${ responseData}');
+
+      if (responseData != null) {
+        // Manejo de respuesta exitosa
+        Get.snackbar('Éxito', 'Inicio de sesión exitoso');
+        Get.toNamed('/home');
+      } else {
+        errorMessage.value = 'Usuario o contraseña incorrectos';
+      }
+    } catch (e) {
+      errorMessage.value = 'Error: No se pudo conectar con la API';
+    } finally {
+      isLoading.value = false;
+    }
+  }
+}
