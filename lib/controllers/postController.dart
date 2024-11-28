@@ -6,7 +6,7 @@ import 'package:flutter_application_1/services/postServices.dart';
 class PostController extends GetxController {
   final PostService postService = Get.put(PostService());  // Instanciamos el servicio de post
   final TextEditingController ownerController = TextEditingController();
-  final TextEditingController participantsController = TextEditingController();
+  //final TextEditingController participantsController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
   // Usamos RxString para postType
@@ -19,7 +19,7 @@ class PostController extends GetxController {
   void createPost() async {
     // Verificamos que todos los campos estén completos
     if (ownerController.text.isEmpty ||
-        participantsController.text.isEmpty ||
+        //participantsController.text.isEmpty ||
         descriptionController.text.isEmpty ||
         postType.value.isEmpty) {  // Verificamos que el postType no esté vacío
       Get.snackbar('Error', 'Todos los campos son obligatorios',
