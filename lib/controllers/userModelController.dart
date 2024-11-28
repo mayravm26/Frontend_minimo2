@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:flutter_application_1/models/userModel.dart';
+import 'package:flutter_application_1/models/user.dart';
 
 class UserModelController extends GetxController {
   final user = UserModel(
