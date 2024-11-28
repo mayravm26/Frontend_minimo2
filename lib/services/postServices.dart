@@ -15,7 +15,7 @@ class PostService {
     try {
       // Enviar solicitud POST para crear una nueva experiencia
       Response response = await dio.post(
-        '$baseUrl/posts',
+        '$baseUrl/api/posts',
         data: newPost.toJson(),
       );
 
