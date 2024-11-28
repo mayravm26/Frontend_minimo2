@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_application_1/services/user.dart';
+import 'package:flutter_application_1/services/userServices.dart';
 //import 'package:flutter_application_1/models/userModel.dart';
 
 class UserController extends GetxController {

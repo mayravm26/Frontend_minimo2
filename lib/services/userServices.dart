@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter_application_1/models/userModel.dart';
+import 'package:flutter_application_1/models/user.dart';
 import 'package:dio/dio.dart';
 
 class UserService {

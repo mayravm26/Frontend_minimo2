@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               child: Column(
                 children: [
                   const Text(
-                    'Gracias por empezar a programar en Flutter BB',
+                    'Bienvenido a StayClose',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
