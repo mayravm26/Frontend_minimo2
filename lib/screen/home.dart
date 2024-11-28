@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/controllers/userModelController.dart';
+import 'package:flutter_application_1/controllers/userController.dart';
 import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,13 +30,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    Get.put(UserModelController());
+    Get.put(UserController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
         backgroundColor: const Color(0xFF89AFAF), // Color de la AppBar
       ),
-<<<<<<< HEAD
       body: Container(
         color: const Color(0xFFE0F7FA), // Fondo de la pantalla
         child: Center(
@@ -53,54 +52,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   offset: Offset(0, 5),
                 ),
               ],
-=======
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                    offset: Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  const Text(
-                    'Bienvenido a StayClose',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 20),
-                  // Corazón animado
-                  AnimatedBuilder(
-                    animation: _animation,
-                    builder: (context, child) {
-                      return Transform.scale(
-                        scale: _animation.value,
-                        child: Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                          size: 100,
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
->>>>>>> remotes/origin/posts
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter_application_1/controllers/userController.dart';
 
 class LogInPage extends StatelessWidget {
-  // Inyectar el controlador para que esté disponible en esta página
   final UserController userController = Get.put(UserController());
 
   @override
@@ -16,9 +15,9 @@ class LogInPage extends StatelessWidget {
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          margin: const EdgeInsets.symmetric(horizontal: 40.0), // Reduce el margen horizontal
+          margin: const EdgeInsets.symmetric(horizontal: 40.0),
           constraints: BoxConstraints(
-            maxWidth: 300, // Limita el ancho del contenedor
+            maxWidth: 300,
           ),
           decoration: BoxDecoration(
             color: Color.fromARGB(194, 162, 204, 204),
@@ -46,16 +45,26 @@ class LogInPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 TextField(
                   controller: userController.usernameController,
+                  cursorColor: Colors.white,
                   decoration: InputDecoration(
                     labelText: 'Username',
+                    labelStyle: TextStyle(color: Colors.white),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
                     border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: userController.passwordController,
+                  cursorColor: Colors.white,
                   decoration: InputDecoration(
                     labelText: 'Contraseña',
+                    labelStyle: TextStyle(color: Colors.white),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -69,6 +78,7 @@ class LogInPage extends StatelessWidget {
                       onPressed: userController.logIn,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF89AFAF),
+                        foregroundColor: Colors.white,
                       ),
                       child: Text('Iniciar Sesión'),
                     );
@@ -93,6 +103,7 @@ class LogInPage extends StatelessWidget {
                   onPressed: () => Get.toNamed('/register'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF89AFAF),
+                    foregroundColor: Colors.white,
                   ),
                   child: Text('Registrarse'),
                 ),

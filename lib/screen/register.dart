@@ -15,9 +15,9 @@ class RegisterPage extends StatelessWidget {
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(16.0),
-          margin: const EdgeInsets.symmetric(horizontal: 40.0), // Reduce el margen horizontal
+          margin: const EdgeInsets.symmetric(horizontal: 40.0),
           constraints: BoxConstraints(
-            maxWidth: 500, // Establece un ancho máximo más pequeño
+            maxWidth: 500,
           ),
           decoration: BoxDecoration(
             color: Color.fromARGB(194, 162, 204, 204),
@@ -45,32 +45,52 @@ class RegisterPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 TextField(
                   controller: registerController.usernameController,
+                  cursorColor: Colors.white,
                   decoration: InputDecoration(
                     labelText: 'Username',
+                    labelStyle: TextStyle(color: Colors.white),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
                     border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: registerController.nameController,
+                  cursorColor: Colors.white,
                   decoration: InputDecoration(
                     labelText: 'Nom',
+                    labelStyle: TextStyle(color: Colors.white),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
                     border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: registerController.emailController,
+                  cursorColor: Colors.white,
                   decoration: InputDecoration(
                     labelText: 'Correo Electrónico',
+                    labelStyle: TextStyle(color: Colors.white),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
                     border: OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 10),
                 TextField(
                   controller: registerController.passwordController,
+                  cursorColor: Colors.white,
                   decoration: InputDecoration(
                     labelText: 'Contraseña',
+                    labelStyle: TextStyle(color: Colors.white),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white),
+                    ),
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
@@ -84,6 +104,7 @@ class RegisterPage extends StatelessWidget {
                       onPressed: registerController.signUp,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF89AFAF),
+                        foregroundColor: Colors.white,
                       ),
                       child: Text('Registrarse'),
                     );
@@ -103,13 +124,22 @@ class RegisterPage extends StatelessWidget {
                     return Container();
                   }
                 }),
+                const SizedBox(height: 20),
+                Text(
+                  "Ya tienes una cuenta, inicia Sessión",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF004D40),
+                  ),
+                ),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () => Get.toNamed('/login'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF89AFAF),
+                    foregroundColor: Colors.white,
                   ),
-                  child: Text('Volver'),
+                  child: Text('Inicia Sessión'),
                 ),
               ],
             ),

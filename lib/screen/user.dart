@@ -1,5 +1,5 @@
 /*import 'package:flutter/material.dart';
-import 'package:flutter_application_1/services/user.dart';
+import 'package:flutter_application_1/services/userServices.dart';
 import 'package:flutter_application_1/controllers/userListController.dart';
 import 'package:flutter_application_1/controllers/registerController.dart';
 import 'package:flutter_application_1/Widgets/userCard.dart';
@@ -136,14 +136,21 @@ Widget build(BuildContext context) {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 TextField(
+                  controller: registerController.usernameController,
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                    errorText: _commentError,
+                  ),
+                ),
+                TextField(
                   controller: registerController.nameController,
                   decoration: InputDecoration(
-                    labelText: 'Usuario',
+                    labelText: 'Name',
                     errorText: _usernameError, // Definir o eliminar estas variables
                   ),
                 ),
                 TextField(
-                  controller: registerController.mailController,
+                  controller: registerController.emailController,
                   decoration: InputDecoration(
                     labelText: 'Mail',
                     errorText: _mailError,
@@ -157,13 +164,7 @@ Widget build(BuildContext context) {
                   ),
                   obscureText: true,
                 ),
-                TextField(
-                  controller: registerController.commentController,
-                  decoration: InputDecoration(
-                    labelText: 'Comentario',
-                    errorText: _commentError,
-                  ),
-                ),
+                
                 SizedBox(height: 16),
                 Obx(() {
                   if (registerController.isLoading.value) {
