@@ -26,13 +26,26 @@ class BottomNavScaffold extends StatelessWidget {
               icon: Icon(Icons.home),
               label: 'Home',
             ),
+            
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Usuarios',
+              icon: Icon(Icons.app_registration_sharp),
+              label: 'Posts',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.local_activity),
-              label: 'Posts',
+              icon: Icon(Icons.location_on_outlined),
+              label: 'Mapa',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.calendar_month_outlined),
+              label: 'Calendari',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.forum_outlined),
+              label: 'Chat',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline),
+              label: 'Perfil',
             ),
           ],
         ),

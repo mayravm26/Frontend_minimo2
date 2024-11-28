@@ -3,9 +3,8 @@ import 'package:get/get.dart';
 import 'package:flutter_application_1/Widgets/bottomNavigationBar.dart';
 import 'package:flutter_application_1/screen/postScreen.dart';
 import 'package:flutter_application_1/screen/logIn.dart';
-import 'package:flutter_application_1/screen/perfil.dart';
 import 'package:flutter_application_1/screen/register.dart';
-import 'package:flutter_application_1/screen/user.dart';
+//import 'package:flutter_application_1/screen/user.dart';
 import 'package:flutter_application_1/screen/home.dart';
 
 
