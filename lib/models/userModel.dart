@@ -70,6 +70,7 @@ class UserModel with ChangeNotifier {
   // Método toJson para convertir una instancia de UserModel en un Map
   Map<String, dynamic> toJson() {
     return {
+      'username': _username,
       'name': _name,
       'email': _email,
       'password':_password,

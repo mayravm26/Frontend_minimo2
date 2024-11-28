@@ -1,4 +1,4 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/services/user.dart';
 import 'package:flutter_application_1/models/userModel.dart';
@@ -7,9 +7,10 @@ class RegisterController extends GetxController {
   final UserService userService = Get.put(UserService());
 
   final TextEditingController nameController = TextEditingController();
-   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController mailController = TextEditingController();
-  final TextEditingController commentController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  
 
   var isLoading = false.obs;
   var errorMessage = ''.obs;
@@ -18,14 +19,14 @@ class RegisterController extends GetxController {
 
   void signUp() async {
     // Validación de campos vacíos
-    if (nameController.text.isEmpty || passwordController.text.isEmpty || mailController.text.isEmpty || commentController.text.isEmpty) {
+    if (nameController.text.isEmpty || passwordController.text.isEmpty || emailController.text.isEmpty || usernameController.text.isEmpty) {
       errorMessage.value = 'Campos vacíos';
       Get.snackbar('Error', errorMessage.value, snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
     // Validación de formato de correo electrónico
-    if (!GetUtils.isEmail(mailController.text)) {
+    if (!GetUtils.isEmail(emailController.text)) {
       errorMessage.value = 'Correo electrónico no válido';
       Get.snackbar('Error', errorMessage.value, snackPosition: SnackPosition.BOTTOM);
       return;
@@ -35,10 +36,12 @@ class RegisterController extends GetxController {
 
     try {
       UserModel newUser = UserModel(
+        username: usernameController.text,
         name: nameController.text,
         password: passwordController.text,
-        mail: mailController.text,
-        comment: commentController.text
+        email: emailController.text,
+        actualUbication: List.empty(),
+        admin: true
       );
 
       final response = await userService.createUser(newUser);
@@ -57,4 +60,4 @@ class RegisterController extends GetxController {
       isLoading.value = false;
     }
   }
-}*/
+}

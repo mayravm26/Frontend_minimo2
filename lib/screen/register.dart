@@ -1,4 +1,4 @@
-/*import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/controllers/registerController.dart';
 
@@ -15,11 +15,15 @@ class RegisterPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: registerController.nameController,
-              decoration: InputDecoration(labelText: 'Usuario'),
+              controller: registerController.usernameController,
+              decoration: InputDecoration(labelText: 'Username'),
             ),
             TextField(
-              controller: registerController.mailController,
+              controller: registerController.nameController,
+              decoration: InputDecoration(labelText: 'Nom'),
+            ),
+            TextField(
+              controller: registerController.emailController,
               decoration: InputDecoration(labelText: 'Correo Electrónico'),
             ),
             TextField(
@@ -27,10 +31,7 @@ class RegisterPage extends StatelessWidget {
               decoration: InputDecoration(labelText: 'Contraseña'),
               obscureText: true,
             ),
-            TextField(
-              controller: registerController.commentController,
-              decoration: InputDecoration(labelText: 'Comentario'),
-            ),
+            
             SizedBox(height: 16),
             
             // Mostrar CircularProgressIndicator o botón de registro según el estado de carga
@@ -72,5 +73,5 @@ class RegisterPage extends StatelessWidget {
       ),
     );
   }
-}*/
+}
 

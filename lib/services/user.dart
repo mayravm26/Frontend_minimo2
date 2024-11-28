@@ -69,7 +69,7 @@ class UserService {
     print('request');
     // Utilizar Dio para enviar la solicitud POST a http://127.0.0.1:3000/user
     Response response =
-        await dio.post('$baseUrl/user/newUser', data: newUser.toJson());
+        await dio.post('$baseUrl/user/', data: newUser.toJson());
     print('response');
     //En response guardamos lo que recibimos como respuesta
     //Printeamos los datos recibidos
@@ -83,7 +83,7 @@ class UserService {
 
     if (statusCode == 200) {
       // Si el usuario se crea correctamente, retornamos el código 201
-      print('200');
+      print('200: usuario creado');
       return 201;
     } else if (statusCode == 400) {
       // Si hay campos faltantes, retornamos el código 400

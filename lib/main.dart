@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/register',
       getPages: [
         // Ruta de inicio de sesión
         GetPage(
@@ -30,10 +30,10 @@ class MyApp extends StatelessWidget {
           page: () => LogInPage(),
         ),
         // Ruta de registro
-        /*GetPage(
+        GetPage(
           name: '/register',
           page: () => RegisterPage(),
-        ),*/
+        ),
         // Ruta de la pantalla principal con BottomNavScaffold
         GetPage(
           name: '/home',
