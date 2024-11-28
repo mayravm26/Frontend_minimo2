@@ -50,7 +50,7 @@ class PostService {
     print('getPosts');
     try {
       // Enviar solicitud GET para obtener las experiencias
-      var res = await dio.get('$baseUrl/posts');
+      var res = await dio.get('$baseUrl/api/posts');
       print(res);
       List<dynamic> responseData = res.data;
       print(responseData);
@@ -72,7 +72,7 @@ class PostService {
     try {
       // Enviar solicitud PUT para actualizar una experiencia
       Response response = await dio.put(
-        '$baseUrl/posts/$id',
+        '$baseUrl/api/posts/$id',
         data: updatedPost.toJson(),
       );
 
@@ -107,7 +107,7 @@ Future<int> deletePostById(String id) async {
   print('deletePostById');
   try {
     // Enviar solicitud DELETE utilizando el id como parámetro en la URL
-    Response response = await dio.delete('$baseUrl/posts/$id');  // Usamos el id en la URL
+    Response response = await dio.delete('$baseUrl/api/posts/$id');  // Usamos el id en la URL
 
     // Guardar datos de la respuesta
     data = response.data.toString();
