@@ -4,20 +4,24 @@ import 'package:flutter_application_1/models/post.dart';
 import 'package:flutter_application_1/services/postServices.dart';
 
 class PostController extends GetxController {
-  final PostService postService = Get.put(PostService());  // Crear la instancia
+  final PostService postService = Get.put(PostService());  // Instanciamos el servicio de post
   final TextEditingController ownerController = TextEditingController();
   final TextEditingController participantsController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+
+  // Usamos RxString para postType
+  var postType = ''.obs;
 
   var isLoading = false.obs;
   var errorMessage = ''.obs;
 
   // Método para crear una nueva experiencia
-  void createExperience() async {
+  void createPost() async {
     // Verificamos que todos los campos estén completos
     if (ownerController.text.isEmpty ||
         participantsController.text.isEmpty ||
-        descriptionController.text.isEmpty) {
+        descriptionController.text.isEmpty ||
+        postType.value.isEmpty) {  // Verificamos que el postType no esté vacío
       Get.snackbar('Error', 'Todos los campos son obligatorios',
           snackPosition: SnackPosition.BOTTOM);
       return;
@@ -26,7 +30,7 @@ class PostController extends GetxController {
     // Creamos la nueva experiencia (nuevo post)
     final newPost = PostModel.fromJson({
       'author': ownerController.text,  // Asumimos que "owner" es "author" en PostModel
-      'postType': 'Tipo de experiencia', // Asignar el tipo de experiencia si es necesario
+      'postType': postType.value,  // Asignar el tipo de experiencia si es necesario
       'content': descriptionController.text,
       'image': null, // Si no tienes una imagen, puedes poner null
       'postDate': DateTime.now().toIso8601String(), // Fecha actual si se requiere

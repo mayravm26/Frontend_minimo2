@@ -68,49 +68,72 @@ class PostForm extends StatelessWidget {
   const PostForm({Key? key, required this.postController}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Crear Nueva Experiencia',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+Widget build(BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        'Crear Nueva Experiencia',
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      ),
+      TextField(
+        controller: postController.ownerController,
+        decoration: InputDecoration(
+          labelText: 'Propietario',
+          // (errorText: experienceController.ownerError.value)
         ),
-        TextField(
-          controller: postController.ownerController,
-          decoration: InputDecoration(
-            labelText: 'Propietario',
-            //(errorText: experienceController.ownerError.value,
-          ),
+      ),
+      TextField(
+        controller: postController.participantsController,
+        decoration: InputDecoration(
+          labelText: 'Participantes',
+          // errorText: experienceController.participantsError.value,
         ),
-        TextField(
-          controller: postController.participantsController,
-          decoration: InputDecoration(
-            labelText: 'Participantes',
-            //errorText: experienceController.participantsError.value,
-          ),
+      ),
+      TextField(
+        controller: postController.descriptionController,
+        decoration: InputDecoration(
+          labelText: 'Descripción',
+          // errorText: experienceController.descriptionError.value,
         ),
-        TextField(
-          controller: postController.descriptionController,
-          decoration: InputDecoration(
-            labelText: 'Descripción',
-            //errorText: experienceController.descriptionError.value,
-          ),
-        ),
-        SizedBox(height: 16),
-        Obx(() {
-          if (postController.isLoading.value) {
-            return CircularProgressIndicator();
-          } else {
-            return ElevatedButton(
-              onPressed: () {
-                postController.createExperience();
-              },
-              child: Text('Crear Experiencia'),
+      ),
+      SizedBox(height: 16),
+
+      // Dropdown para seleccionar el tipo de post
+      Obx(() {
+        return DropdownButton<String>(
+          value: postController.postType.value.isEmpty ? null : postController.postType.value,
+          hint: Text('Seleccionar tipo de post'),
+          items: <String>['Pelicula', 'Libro', 'Evento']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
             );
-          }
-        }),
-      ],
-    );
+          }).toList(),
+          onChanged: (String? newValue) {
+            // Actualizar el tipo de post
+            postController.postType.value = newValue!;
+          },
+        );
+      }),
+
+      SizedBox(height: 16),
+
+      // Botón para crear el post
+      Obx(() {
+        if (postController.isLoading.value) {
+          return CircularProgressIndicator();
+        } else {
+          return ElevatedButton(
+            onPressed: () {
+              postController.createPost();  // Llama al método para crear el post
+            },
+            child: Text('Crear post'),
+          );
+        }
+      }),
+    ],
+  );
   }
 }
