@@ -10,6 +10,11 @@ class RegisterController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
+
+  var isPasswordVisible = false.obs;
+  var isConfirmPasswordVisible = false.obs;
+  
   
 
   var isLoading = false.obs;
@@ -17,7 +22,7 @@ class RegisterController extends GetxController {
 
   
 
-  void signUp() async {
+  /*void signUp() async {
     // Validación de campos vacíos
     if (nameController.text.isEmpty || passwordController.text.isEmpty || emailController.text.isEmpty || usernameController.text.isEmpty) {
       errorMessage.value = 'Campos vacíos';
@@ -58,6 +63,66 @@ class RegisterController extends GetxController {
       Get.snackbar('Error', errorMessage.value, snackPosition: SnackPosition.BOTTOM);
     } finally {
       isLoading.value = false;
+    }
+  }*/
+
+    // Toggle password visibility
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+  }
+
+  // Toggle confirm password visibility
+  void toggleConfirmPasswordVisibility() {
+    isConfirmPasswordVisible.value = !isConfirmPasswordVisible.value;
+  }
+
+  // Sign up logic
+  void signUp() async {
+    // Handle sign-up logic
+    if (passwordController.text == confirmPasswordController.text) {
+      // Validación de campos vacíos
+    if (nameController.text.isEmpty || passwordController.text.isEmpty || emailController.text.isEmpty || usernameController.text.isEmpty) {
+      errorMessage.value = 'Campos vacíos';
+      Get.snackbar('Error', errorMessage.value, snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    // Validación de formato de correo electrónico
+    if (!GetUtils.isEmail(emailController.text)) {
+      errorMessage.value = 'Correo electrónico no válido';
+      Get.snackbar('Error', errorMessage.value, snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    isLoading.value = true;
+
+    try {
+      UserModel newUser = UserModel(
+        username: usernameController.text,
+        name: nameController.text,
+        password: passwordController.text,
+        email: emailController.text,
+        actualUbication: List.empty(),
+        admin: true
+      );
+
+      final response = await userService.createUser(newUser);
+
+      if (response != null && response== 201) {
+        Get.snackbar('Éxito', 'Usuario creado exitosamente');
+        Get.toNamed('/login');
+      } else {
+        errorMessage.value = 'Error: Este E-Mail o Teléfono ya están en uso';
+        Get.snackbar('Error', errorMessage.value, snackPosition: SnackPosition.BOTTOM);
+      }
+    } catch (e) {
+      errorMessage.value = 'Error al registrar usuario';
+      Get.snackbar('Error', errorMessage.value, snackPosition: SnackPosition.BOTTOM);
+    } finally {
+      isLoading.value = false;
+    }
+    } else {
+      errorMessage.value = 'Las contraseñas no coinciden';
     }
   }
 }

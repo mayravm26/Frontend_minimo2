@@ -56,19 +56,35 @@ class LogInPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                TextField(
-                  controller: userController.passwordController,
-                  cursorColor: Colors.white,
-                  decoration: InputDecoration(
-                    labelText: 'Contraseña',
-                    labelStyle: TextStyle(color: Colors.white),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                
+                // Password Field with Visibility Toggle
+                Obx(() {
+                  return TextField(
+                    controller: userController.passwordController,
+                    cursorColor: Colors.white,
+                    obscureText: !userController.isPasswordVisible.value,
+                    decoration: InputDecoration(
+                      labelText: 'Contraseña',
+                      labelStyle: TextStyle(color: Colors.white),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      border: OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          userController.isPasswordVisible.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          userController.togglePasswordVisibility();
+                        },
+                      ),
                     ),
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: true,
-                ),
+                  );
+                }),
+
                 const SizedBox(height: 20),
                 Obx(() {
                   if (userController.isLoading.value) {
@@ -98,6 +114,14 @@ class LogInPage extends StatelessWidget {
                     return Container();
                   }
                 }),
+                const SizedBox(height: 10),
+                Text(
+                  "Aun no tienes una cuenta, Registrate",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  ),
+                ),
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () => Get.toNamed('/register'),

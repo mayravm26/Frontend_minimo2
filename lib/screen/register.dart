@@ -82,19 +82,63 @@ class RegisterPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
+                
+                // Password Field with Visibility Toggle
+                Obx(() {
+                  return TextField(
+                    controller: registerController.passwordController,
+                    cursorColor: Colors.white,
+                    obscureText: !registerController.isPasswordVisible.value,
+                    decoration: InputDecoration(
+                      labelText: 'Contraseña',
+                      labelStyle: TextStyle(color: Colors.white),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                      border: OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          registerController.isPasswordVisible.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          registerController.togglePasswordVisibility();
+                        },
+                      ),
+                    ),
+                  );
+                }),
+
+                const SizedBox(height: 10),
+
+                // Confirm Password Field
                 TextField(
-                  controller: registerController.passwordController,
+                  controller: registerController.confirmPasswordController,
                   cursorColor: Colors.white,
+                  obscureText: !registerController.isConfirmPasswordVisible.value,
                   decoration: InputDecoration(
-                    labelText: 'Contraseña',
+                    labelText: 'Confirmar Contraseña',
                     labelStyle: TextStyle(color: Colors.white),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
                     border: OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        registerController.isConfirmPasswordVisible.value
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        registerController.toggleConfirmPasswordVisibility();
+                      },
+                    ),
                   ),
-                  obscureText: true,
                 ),
+
                 const SizedBox(height: 20),
                 Obx(() {
                   if (registerController.isLoading.value) {
@@ -124,23 +168,6 @@ class RegisterPage extends StatelessWidget {
                     return Container();
                   }
                 }),
-                const SizedBox(height: 20),
-                Text(
-                  "Ya tienes una cuenta, inicia Sessión",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF004D40),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () => Get.toNamed('/login'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF89AFAF),
-                    foregroundColor: Colors.white,
-                  ),
-                  child: Text('Inicia Sessión'),
-                ),
               ],
             ),
           ),

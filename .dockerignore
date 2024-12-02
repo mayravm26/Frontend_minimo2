@@ -1,0 +1,34 @@
+# Ignorar archivos generados automáticamente por Flutter
+build/
+.flutter/
+.dart_tool/
+.packages
+
+# Ignorar configuraciones específicas del editor
+.idea/
+.vscode/
+
+# Ignorar cachés y dependencias innecesarias
+*.lock
+*.log
+pubspec.lock
+.cache/
+logs/
+
+# Ignorar binarios y archivos temporales
+*.apk
+*.ipa
+*.iml
+*.DS_Store
+
+# Ignorar archivos del sistema operativo
+Thumbs.db
+Desktop.ini
+
+# Ignorar archivos y carpetas de control de versiones
+.git/
+.gitignore
+
+# Otros archivos temporales o de configuración
+*.tmp
+*.swp

@@ -13,6 +13,13 @@ class UserController extends GetxController {
   // Variables reactivas para la UI
   var isLoading = false.obs;
   var errorMessage = ''.obs;
+  var isPasswordVisible = false.obs;
+  
+
+  // Toggle password visibility
+  void togglePasswordVisibility() {
+    isPasswordVisible.value = !isPasswordVisible.value;
+  }
 
   void logIn() async {
     // Validación de campos

@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/register',
+      initialRoute: '/login',
       getPages: [
         // Ruta de inicio de sesión
         GetPage(
