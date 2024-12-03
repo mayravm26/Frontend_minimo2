@@ -125,6 +125,16 @@ class UserService {
     }
   }
 
+  Future<Map<String, dynamic>> getUserByUsername(String username) async {
+  try {
+    var res = await dio.get('$baseUrl/user/getUserUsername/$username');  // Asegúrate de que esta URL sea correcta
+    return res.data;  // Aquí devuelve el `Map<String, dynamic>` directamente
+  } catch (e) {
+    print('Error obteniendo datos del usuario: $e');
+    throw e;
+  }
+}
+
   Future<int> EditUser(UserModel newUser, String id) async {
     print('createUser');
     print('try');
