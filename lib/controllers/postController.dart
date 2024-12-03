@@ -6,12 +6,10 @@ import 'package:flutter_application_1/services/postServices.dart';
 class PostController extends GetxController {
   final PostService postService = Get.put(PostService());  // Instanciamos el servicio de post
   final TextEditingController ownerController = TextEditingController();
-  //final TextEditingController participantsController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
 
   // Usamos RxString para postType
   var postType = ''.obs;
-
   var isLoading = false.obs;
   var errorMessage = ''.obs;
 

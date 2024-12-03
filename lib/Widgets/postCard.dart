@@ -13,15 +13,15 @@ class PostCard extends StatelessWidget {
   Color _getPostTypeColor(String postType) {
     switch (postType) {
       case 'Pelicula':
-        return const Color(0xFFD9534F); // Rojo suave
+        return const Color(0xFF002F49); // Rojo suave
       case 'Libro':
-        return const Color(0xFFF0AD4E); // Naranja suave
+        return const Color(0xFF002F49); // Naranja suave
       case 'Evento':
-        return const Color(0xFF5BC0DE); // Azul suave
+        return const Color(0xFF002F49); // Azul suave
       case 'Música':
-        return const Color(0xFF5CB85C); // Verde suave
+        return const Color(0xFF002F49); // Verde suave
       default:
-        return const Color(0xFFB0BEC5); // Gris
+        return const Color(0xFF002F49); // Gris
     }
   }
 
