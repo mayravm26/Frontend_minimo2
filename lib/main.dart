@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_application_1/controllers/userController.dart';
 import 'package:flutter_application_1/Widgets/bottomNavigationBar.dart';
 import 'package:flutter_application_1/screen/postScreen.dart';
 import 'package:flutter_application_1/screen/logIn.dart';
 import 'package:flutter_application_1/screen/register.dart';
 //import 'package:flutter_application_1/screen/user.dart';
 import 'package:flutter_application_1/screen/home.dart';
+import 'package:flutter_application_1/screen/perfilScreen.dart';
 
 
 void main() {
   runApp(
     MyApp(),
   );
+    Get.put(UserController());  // Esto asegura que el controlador se ponga en el GetX 'depósito'
+
 }
 
 class MyApp extends StatelessWidget {
@@ -38,18 +42,26 @@ class MyApp extends StatelessWidget {
           name: '/home',
           page: () => BottomNavScaffold(child: HomePage()),
         ),
-        /*GetPage(
-          name: '/usuarios',
-          page: () => BottomNavScaffold(child: UserPage()),
-        ),*/
         GetPage(
           name: '/posts',
           page: () => BottomNavScaffold(child: PostsScreen()),
         ),
         /*GetPage(
-          name: '/perfil',
-          page: () => BottomNavScaffold(child: PerfilPage()),
+          name: '/mapa',
+          page: () => BottomNavScaffold(child: PerfilScreen()),
+        ),
+        GetPage(
+          name: '/calendario',
+          page: () => BottomNavScaffold(child: PerfilScreen()),
+        ),
+        GetPage(
+          name: '/chat',
+          page: () => BottomNavScaffold(child: PerfilScreen()),
         ),*/
+        GetPage(
+          name: '/perfil',
+          page: () => BottomNavScaffold(child: PerfilScreen()),
+        ),
       ],
     );
   }
