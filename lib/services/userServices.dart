@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter_application_1/models/user.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:jwt_decoder/jwt_decoder.dart'; // Para decodificar el JWT
 
 class UserService {
   final String baseUrl = "http://127.0.0.1:3000/api"; // URL de tu backend Web
@@ -9,57 +11,58 @@ class UserService {
   var statusCode;
   var data;
 
-  Future<int> logIn(logIn) async {
-    print('LogIn');
-    print('try');
-    //Aquí llamamos a la función request
-    print('request');
+  // Obtener el token desde SharedPreferences
+  Future<String?> _getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
 
-    print('el login es:${logIn}');
-
-    Response response =
-        await dio.post('$baseUrl/user/login', data: logInToJson(logIn));
-    //En response guardamos lo que recibimos como respuesta
-    //Printeamos los datos recibidos
-
-    data = response.data.toString();
-    print('Data: $data');
-    //Printeamos el status code recibido por el backend
-
-    statusCode = response.statusCode;
-    print('Status code: $statusCode');
-
-    if (statusCode == 200) {
-      print('200');
-      return 201;
-    } else if (statusCode == 400) {
-      // Si hay campos faltantes, retornamos el código 400
-      print('400');
-
-      return 400;
-    } else if (statusCode == 500) {
-      // Si hay un error interno del servidor, retornamos el código 500
-      print('500');
-
-      return 500;
+  // Configurar las cabeceras con el token
+  Future<void> _setAuthHeaders() async {
+    String? token = await _getToken();
+    if (token != null) {
+      dio.options.headers['auth-token'] = token;
     } else {
-      // Otro caso no manejado
-      print('-1');
-
-      return -1;
+      print('No se encontró un token en SharedPreferences.');
     }
   }
 
+  Future<int> logIn(logIn) async {
+    try {
+      print('Enviando solicitud de LogIn');
+      Response response = await dio.post('$baseUrl/user/login', data: logInToJson(logIn));
+
+      if (response.statusCode == 200) {
+        String token = response.data['token'];
+        if (token == null) {
+          return -1;  // Si el token es null, no se puede continuar
+        }
+        // Decodificar el token JWT
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+        print('Token decodificado: $decodedToken');
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+        await prefs.setString('user_id', decodedToken['id'] ?? ''); // Manejar `null`
+        await prefs.setString('username', decodedToken['username'] ?? '');
+         await prefs.setString('email', decodedToken['email'] ?? '');
+        await prefs.setBool('is_admin', decodedToken['admin'] ?? true);
+
+        print('Token y datos guardados en SharedPreferences.');
+        return 200;
+      } else {
+        print('Error en logIn: ${response.statusCode}');
+        return response.statusCode!;
+      }
+    } catch (e) {
+      print('Error en logIn: $e');
+      return -1;
+    }
+  }
   Map<String, dynamic> logInToJson(logIn) {
     return {'username': logIn.username, 
     'password': logIn.password};
   }
-  
-  
-  
-  
-  
-  
   
   //Función createUser
   Future<int> createUser(UserModel newUser) async {
@@ -103,8 +106,6 @@ class UserService {
     }
   }
 
-
-
   Future<List<UserModel>> getUsers(int page, int limit) async {
     print('getUsers');
     try {
@@ -125,15 +126,6 @@ class UserService {
     }
   }
 
-  Future<Map<String, dynamic>> getUserByUsername(String username) async {
-  try {
-    var res = await dio.get('$baseUrl/user/getUserUsername/$username');  // Asegúrate de que esta URL sea correcta
-    return res.data;  // Aquí devuelve el `Map<String, dynamic>` directamente
-  } catch (e) {
-    print('Error obteniendo datos del usuario: $e');
-    throw e;
-  }
-}
 
   Future<int> EditUser(UserModel newUser, String id) async {
     print('createUser');
@@ -216,4 +208,24 @@ class UserService {
     }
   }
 
+  // Método para obtener un usuario por su ID
+  /*Future<UserModel?> getUserById(String id) async {
+    try {
+      // Configurar las cabeceras con el token antes de la solicitud
+      await _setAuthHeaders();
+
+      // Realizar la solicitud GET
+      Response response = await dio.get('$baseUrl/user/getUser/$id');
+
+      if (response.statusCode == 200 && response.data != null) {
+        return UserModel.fromJson(response.data); // Convertir la respuesta en un objeto UserModel
+      } else {
+        print('Error: ${response.statusCode} al obtener el usuario');
+        return null;
+      }
+    } catch (e) {
+      print('Error en getUserById: $e');
+      return null;
+    }
+  }*/
 }

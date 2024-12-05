@@ -51,8 +51,6 @@ class UserController extends GetxController {
       if (responseData != null) {
         // Manejo de respuesta exitosa
         Get.snackbar('Éxito', 'Inicio de sesión exitoso');
-        // Ahora que el login fue exitoso, obtenemos los datos del usuario
-        await getUserData(usernameController.text); // Llamamos a getUserData para obtener los datos del usuario
         Text('Bienvenido, ${user.value?.name ?? "Cargando..."}');
         Get.toNamed('/home');
       } else {
@@ -65,22 +63,6 @@ class UserController extends GetxController {
     }
   }
 
-  Future<void> getUserData(String username) async {
-  try {
-    // Llamamos al servicio para obtener los datos del usuario por su username
-    var response = await userService.getUserByUsername(username);
-    
-    if (response != null) {
-      // Convertimos el Map<String, dynamic> a UserModel
-      user.value = UserModel.fromJson(response);  // Aquí convertimos el Map a UserModel
-      print('Usuario obtenido: ${user.value}');
-    } else {
-      Get.snackbar('Error', 'No se pudo obtener los datos del usuario', snackPosition: SnackPosition.BOTTOM);
-    }
-  } catch (e) {
-    print('Error al obtener los datos del usuario: $e');
-    Get.snackbar('Error', 'No se pudo conectar con el servidor', snackPosition: SnackPosition.BOTTOM);
-  }
-}
+
 
 }

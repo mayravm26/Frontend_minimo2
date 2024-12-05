@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PerfilScreen extends StatelessWidget {
-  // Ruta para cada botón de la pantalla de perfil
-  void _onButtonPressed(BuildContext context, String route) {
-    // Aquí puedes implementar la navegación a otras pantallas
-    // Por ahora solo es un ejemplo con un mensaje de consola
-    print('Navegando a $route');
+class PerfilScreen extends StatefulWidget {
+  @override
+  _PerfilScreenState createState() => _PerfilScreenState();
+}
+
+class _PerfilScreenState extends State<PerfilScreen> {
+  String? _username;
+  String? _email;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  // Cargar los datos del usuario desde SharedPreferences
+  Future<void> _loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _username = prefs.getString('username');
+      _email = prefs.getString('email');
+    });
   }
 
   @override
@@ -26,19 +43,20 @@ class PerfilScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center, // Centra los elementos verticalmente
               crossAxisAlignment: CrossAxisAlignment.center, // Centra los elementos horizontalmente
               children: [
-                // Foto de perfil centrada
                 CircleAvatar(
-                  radius: 80, // Tamaño de la imagen
-                  backgroundImage: NetworkImage(
-                    'https://www.example.com/profile_image.jpg', // Aquí va la URL de la imagen del perfil
+                  radius: 80, // Tamaño del avatar
+                  backgroundColor: Colors.grey[300], // Color de fondo del avatar
+                  child: Icon(
+                    Icons.person, // El ícono de Flutter que representa un perfil
+                    size: 80, // Tamaño del ícono
+                    color: Colors.white, // Color del ícono
                   ),
                 ),
                 const SizedBox(height: 20),
-                
-                // Nombre del usuario
-                const Text(
-                  'Nombre del Usuario', // Aquí puedes poner el nombre del usuario dinámicamente
-                  style: TextStyle(
+                // Nombre del usuario, si está disponible
+                Text(
+                  _username ?? 'Nombre del Usuario', // Usa el nombre del usuario desde SharedPreferences
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF89AFAF), // El mismo color que hemos usado
@@ -46,10 +64,10 @@ class PerfilScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 
-                // Correo electrónico o información adicional
-                const Text(
-                  'usuario@example.com', // Aquí puedes poner el correo dinámico
-                  style: TextStyle(
+                // Correo electrónico, si está disponible
+                Text(
+                  _email ?? 'usuario@example.com', // Usa el correo desde SharedPreferences
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.grey,
                   ),
@@ -91,5 +109,11 @@ class PerfilScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Ruta para cada botón de la pantalla de perfil
+  void _onButtonPressed(BuildContext context, String route) {
+    // Aquí puedes implementar la navegación a otras pantallas
+    print('Navegando a $route');
   }
 }
