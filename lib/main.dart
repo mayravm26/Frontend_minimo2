@@ -1,3 +1,4 @@
+import 'package:cloudinary_flutter/cloudinary_object.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/controllers/userController.dart';
@@ -8,13 +9,16 @@ import 'package:flutter_application_1/screen/register.dart';
 //import 'package:flutter_application_1/screen/user.dart';
 import 'package:flutter_application_1/screen/home.dart';
 import 'package:flutter_application_1/screen/perfilScreen.dart';
-
-
+import 'package:cloudinary_flutter/cloudinary_context.dart';
+import 'package:cloudinary_flutter/image/cld_image.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
 void main() {
+  
   runApp(
     MyApp(),
   );
-    Get.put(UserController());  // Esto asegura que el controlador se ponga en el GetX 'depósito'
+  CloudinaryContext.cloudinary = Cloudinary.fromCloudName(cloudName: "djen7vqby");
+  Get.put(UserController());  // Esto asegura que el controlador se ponga en el GetX 'depósito'
 
 }
 

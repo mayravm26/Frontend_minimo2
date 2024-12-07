@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/controllers/userController.dart';
+//CLoudinary
+import 'package:cloudinary_flutter/cloudinary_context.dart';
+import 'package:cloudinary_flutter/image/cld_image.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
 
 class LogInPage extends StatelessWidget {
   final UserController userController = Get.put(UserController());
@@ -41,6 +45,11 @@ class LogInPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF004D40),
                   ),
+                ),
+                const SizedBox(height: 20),
+                //Imatge cloudinary
+                CldImageWidget(
+                  publicId: 'cld-sample',
                 ),
                 const SizedBox(height: 20),
                 TextField(
