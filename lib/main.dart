@@ -8,6 +8,7 @@ import 'package:flutter_application_1/screen/register.dart';
 //import 'package:flutter_application_1/screen/user.dart';
 import 'package:flutter_application_1/screen/home.dart';
 import 'package:flutter_application_1/screen/perfilScreen.dart';
+import 'package:flutter_application_1/screen/calendarScreen.dart'; 
 
 
 void main() {
@@ -49,11 +50,11 @@ class MyApp extends StatelessWidget {
         /*GetPage(
           name: '/mapa',
           page: () => BottomNavScaffold(child: PerfilScreen()),
-        ),
+        ),*/
         GetPage(
           name: '/calendario',
-          page: () => BottomNavScaffold(child: PerfilScreen()),
-        ),
+          page: () => BottomNavScaffold(child: CalendarScreen()),
+        ),/*
         GetPage(
           name: '/chat',
           page: () => BottomNavScaffold(child: PerfilScreen()),
