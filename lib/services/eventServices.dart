@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class EventService {
-  final String baseUrl = 'https://yourapi.com'; // La teva URL de l'API
+  final String baseUrl = 'http://127.0.0.1:3000/api'; // La teva URL de l'API
 
   // Mètode per obtenir tots els esdeveniments
   Future<List<EventModel>> getAllEvents() async {
