@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/models/post.dart';
 import 'package:flutter_application_1/services/postServices.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PostController extends GetxController {
   final PostService postService = Get.put(PostService());  // Instanciamos el servicio de post
@@ -12,6 +13,20 @@ class PostController extends GetxController {
   var postType = ''.obs;
   var isLoading = false.obs;
   var errorMessage = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _loadUsername();  // Cargar el username cuando se inicializa el controlador
+  }
+
+
+  // Método para cargar el username desde SharedPreferences
+  void _loadUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.getString('username') ?? '';  // Recupera el username o un string vacío
+    ownerController.text = username;  // Rellenar el campo de autor
+  }
 
   // Método para crear una nueva experiencia
   void createPost() async {
