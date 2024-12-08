@@ -49,7 +49,7 @@ class LogInPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 //Imatge cloudinary
                 CldImageWidget(
-                  publicId: 'cld-sample',
+                  publicId: 'logo_ounbww',
                 ),
                 const SizedBox(height: 20),
                 TextField(

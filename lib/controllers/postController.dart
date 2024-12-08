@@ -21,6 +21,7 @@ class PostController extends GetxController {
   var selectedImagePath = ''.obs; // Path local de la imagen seleccionada
   var uploadedImageUrl = ''.obs; // URL de la imagen subida a Cloudinary
   Uint8List? selectedImage;
+  
   // Seleccionar imagen desde el dispositivo
   Future<void> pickImage() async {
     Uint8List? imageBytes = await ImagePickerWeb.getImageAsBytes();
@@ -42,11 +43,17 @@ class PostController extends GetxController {
       isLoading.value = true;
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('https://api.cloudinary.com/v1_1/<tu_nombre_cloudinary>/image/upload'),
+        Uri.parse('https://api.cloudinary.com/v1_1/djen7vqby/image/upload'),
       );
-      request.fields['upload_preset'] = '<tu_upload_preset>';
-      request.files.add(await http.MultipartFile.fromPath('file', selectedImagePath.value));
-
+      request.fields['upload_preset'] = 'nm1eu9ik';
+      //request.files.add(await http.MultipartFile.fromPath('file', selectedImagePath.value));
+      request.files.add(
+        http.MultipartFile.fromBytes(
+        'file',
+        selectedImage!,
+        filename: 'image_${DateTime.now().millisecondsSinceEpoch}.png',
+        ),
+      );
       var response = await request.send();
       if (response.statusCode == 200) {
         var responseData = await response.stream.bytesToString();
@@ -65,13 +72,26 @@ class PostController extends GetxController {
     }
   }
 
+  // || uploadedImageUrl.isEmpty
   // Método para crear un nuevo post
   void createPost() async {
     if (ownerController.text.isEmpty ||
         descriptionController.text.isEmpty ||
-        postType.value.isEmpty ||
-        uploadedImageUrl.isEmpty) { // Asegúrate de que la imagen haya sido subida
+        postType.value.isEmpty || 
+        uploadedImageUrl.isEmpty ) { // Asegúrate de que la imagen haya sido subida
       Get.snackbar('Error', 'Todos los campos son obligatorios',
+          snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
+
+    // Call the function to upload the image first
+    if (selectedImage != null) {
+      await uploadImageToCloudinary(); // Upload image to Cloudinary first
+    }
+
+    // Ensure the image URL is available before proceeding
+    if (uploadedImageUrl.value.isEmpty) {
+      Get.snackbar('Error', 'La imagen no se subió correctamente.',
           snackPosition: SnackPosition.BOTTOM);
       return;
     }

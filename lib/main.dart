@@ -10,16 +10,14 @@ import 'package:flutter_application_1/screen/register.dart';
 import 'package:flutter_application_1/screen/home.dart';
 import 'package:flutter_application_1/screen/perfilScreen.dart';
 import 'package:cloudinary_flutter/cloudinary_context.dart';
-import 'package:cloudinary_flutter/image/cld_image.dart';
+//import 'package:cloudinary_flutter/image/cld_image.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
 void main() {
-  
+  CloudinaryContext.cloudinary = Cloudinary.fromCloudName(cloudName: "djen7vqby");
+  Get.put(UserController());  // Esto asegura que el controlador se ponga en el GetX 'depósito'
   runApp(
     MyApp(),
   );
-  CloudinaryContext.cloudinary = Cloudinary.fromCloudName(cloudName: "djen7vqby");
-  Get.put(UserController());  // Esto asegura que el controlador se ponga en el GetX 'depósito'
-
 }
 
 class MyApp extends StatelessWidget {
