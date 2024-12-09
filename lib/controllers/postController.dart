@@ -1,8 +1,6 @@
-//import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_application_1/models/post.dart';
 import 'package:flutter_application_1/services/postServices.dart';
@@ -18,22 +16,28 @@ class PostController extends GetxController {
   var isLoading = false.obs;
   var errorMessage = ''.obs;
 
-  var selectedImagePath = ''.obs; // Path local de la imagen seleccionada
+  Uint8List? selectedImage; // Bytes de la imagen seleccionada
   var uploadedImageUrl = ''.obs; // URL de la imagen subida a Cloudinary
-  Uint8List? selectedImage;
-  
+
   // Seleccionar imagen desde el dispositivo
   Future<void> pickImage() async {
-    Uint8List? imageBytes = await ImagePickerWeb.getImageAsBytes();
-    if (imageBytes != null) {
-      selectedImage = imageBytes;
-      update(); // Actualiza la UI
+    try {
+      Uint8List? imageBytes = await ImagePickerWeb.getImageAsBytes();
+      if (imageBytes != null) {
+        selectedImage = imageBytes;
+        uploadedImageUrl.value = ''; // Reinicia la URL de Cloudinary
+        update(); // Actualiza la UI
+        Get.snackbar('Éxito', 'Imagen seleccionada correctamente');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'No se pudo seleccionar la imagen: $e',
+          snackPosition: SnackPosition.BOTTOM);
     }
   }
 
   // Subir imagen a Cloudinary
   Future<void> uploadImageToCloudinary() async {
-    if (selectedImagePath.isEmpty) {
+    if (selectedImage == null) {
       Get.snackbar('Error', 'Selecciona una imagen primero',
           snackPosition: SnackPosition.BOTTOM);
       return;
@@ -46,12 +50,11 @@ class PostController extends GetxController {
         Uri.parse('https://api.cloudinary.com/v1_1/djen7vqby/image/upload'),
       );
       request.fields['upload_preset'] = 'nm1eu9ik';
-      //request.files.add(await http.MultipartFile.fromPath('file', selectedImagePath.value));
       request.files.add(
         http.MultipartFile.fromBytes(
-        'file',
-        selectedImage!,
-        filename: 'image_${DateTime.now().millisecondsSinceEpoch}.png',
+          'file',
+          selectedImage!,
+          filename: 'image_${DateTime.now().millisecondsSinceEpoch}.png',
         ),
       );
       var response = await request.send();
@@ -72,24 +75,22 @@ class PostController extends GetxController {
     }
   }
 
-  // || uploadedImageUrl.isEmpty
-  // Método para crear un nuevo post
+  // Crear un nuevo post
   void createPost() async {
     if (ownerController.text.isEmpty ||
         descriptionController.text.isEmpty ||
-        postType.value.isEmpty || 
-        uploadedImageUrl.isEmpty ) { // Asegúrate de que la imagen haya sido subida
+        postType.value.isEmpty) {
       Get.snackbar('Error', 'Todos los campos son obligatorios',
           snackPosition: SnackPosition.BOTTOM);
       return;
     }
 
-    // Call the function to upload the image first
-    if (selectedImage != null) {
-      await uploadImageToCloudinary(); // Upload image to Cloudinary first
+    // Si la imagen no se ha subido, subirla primero
+    if (uploadedImageUrl.isEmpty && selectedImage != null) {
+      await uploadImageToCloudinary();
     }
 
-    // Ensure the image URL is available before proceeding
+    // Verifica si la imagen fue subida con éxito
     if (uploadedImageUrl.value.isEmpty) {
       Get.snackbar('Error', 'La imagen no se subió correctamente.',
           snackPosition: SnackPosition.BOTTOM);
@@ -100,7 +101,7 @@ class PostController extends GetxController {
       'author': ownerController.text,
       'postType': postType.value,
       'content': descriptionController.text,
-      'image': uploadedImageUrl.value, // URL de la imagen en Cloudinary
+      'image': uploadedImageUrl.value,
       'postDate': DateTime.now().toIso8601String(),
     });
 
