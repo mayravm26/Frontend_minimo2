@@ -16,7 +16,7 @@ class EventModel {
     return EventModel(
       name: json['name'],
       description: json['description'],
-      eventDate: DateTime.parse(json['date']),
+      eventDate: DateTime.parse(json['eventDate']),
       creator: json['creator'],
     );
   }

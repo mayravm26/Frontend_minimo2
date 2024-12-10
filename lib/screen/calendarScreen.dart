@@ -195,14 +195,6 @@ class CalendarScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 16),
                       TextField(
-                        controller: eventController.locationController,
-                        decoration: const InputDecoration(
-                          labelText: 'Ubicació',
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      TextField(
                         controller: eventController.creatorController,
                         decoration: const InputDecoration(
                           labelText: 'Creador',

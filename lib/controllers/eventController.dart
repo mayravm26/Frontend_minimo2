@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/models/event.dart';
 import 'package:flutter_application_1/services/eventServices.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class EventController extends GetxController {
   final eventService = EventService();
@@ -18,7 +20,6 @@ class EventController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
   TextEditingController creatorController = TextEditingController();
   Uint8List? selectedImage;
 
@@ -26,6 +27,14 @@ class EventController extends GetxController {
   void onInit() {
     super.onInit();
     fetchEvents();
+    _loadId();
+  }
+
+   // Método para cargar el id desde SharedPreferences
+  void _loadId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String id = prefs.getString('user_id') ?? '';  
+    creatorController.text = id;  // Rellenar el campo de autor
   }
 
   Future<void> fetchEvents() async {
@@ -43,11 +52,10 @@ class EventController extends GetxController {
   Future<void> createEvent() async {
     final name = nameController.text.trim();
     final description = descriptionController.text.trim();
-    final date = dateController.text.trim();
-    final location = locationController.text.trim();
+    final eventDate = dateController.text.trim();
     final creator = creatorController.text.trim();
 
-    if (name.isEmpty || description.isEmpty || date.isEmpty || location.isEmpty || creator.isEmpty) {
+    if (name.isEmpty || description.isEmpty || eventDate.isEmpty  || creator.isEmpty) {
       Get.snackbar("Error", "Tots els camps són obligatoris");
       return;
     }
@@ -57,7 +65,7 @@ class EventController extends GetxController {
       await eventService.createEvent(EventModel(
         name: name,
         description: description,
-        eventDate: DateTime.parse(date), // Converteix el text a DateTime
+        eventDate: DateTime.parse(eventDate), // Converteix el text a DateTime
         creator: creator,
       ));
       fetchEvents(); // Refresca la llista d'esdeveniments
