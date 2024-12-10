@@ -54,7 +54,7 @@ class EventController extends GetxController {
     final description = descriptionController.text.trim();
     final eventDate = dateController.text.trim();
     final creator = creatorController.text.trim();
-
+  
     if (name.isEmpty || description.isEmpty || eventDate.isEmpty  || creator.isEmpty) {
       Get.snackbar("Error", "Tots els camps són obligatoris");
       return;
@@ -62,10 +62,13 @@ class EventController extends GetxController {
 
     try {
       isLoading.value = true;
+      final eventDate2=DateTime.parse(eventDate); // Converteix el text a DateTime
+      final eventDate3=eventDate2.add(Duration(hours: 2));
+      
       await eventService.createEvent(EventModel(
         name: name,
         description: description,
-        eventDate: DateTime.parse(eventDate), // Converteix el text a DateTime
+        eventDate:eventDate3, // Converteix el text a DateTime
         creator: creator,
       ));
       fetchEvents(); // Refresca la llista d'esdeveniments
