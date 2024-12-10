@@ -4,27 +4,26 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_application_1/controllers/eventController.dart';
 
 class CalendarScreen extends StatelessWidget {
-  final EventController eventController = Get.put(EventController()); // Connecta el controlador
+  final EventController eventController = Get.put(EventController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFDCE6E6), // Color de fons general
+      backgroundColor: const Color(0xFFDCE6E6),
       appBar: AppBar(
-        title: Text("Calendari"),
-        backgroundColor: Color(0xFF89AFAF), // Color de la barra superior
+        title: const Text("Calendari"),
+        backgroundColor: const Color(0xFF89AFAF),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              SizedBox(height: 16), // Separació amb el calendari
-              // Calendari
+              //Calendari
               Obx(() => Container(
                     decoration: BoxDecoration(
-                      color: Color(0xFFB2D5D5), // Color del fons del calendari
-                      borderRadius: BorderRadius.circular(12), // Corbes suaus
+                      color: const Color(0xFFB2D5D5),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                     child: TableCalendar(
                       firstDay: DateTime.utc(2020, 01, 01),
@@ -33,7 +32,7 @@ class CalendarScreen extends StatelessWidget {
                       startingDayOfWeek: StartingDayOfWeek.monday, // Setmana comença dilluns
                       selectedDayPredicate: (day) =>
                           isSameDay(eventController.selectedDay.value, day),
-                      onDaySelected: eventController.onDaySelected, // Gestiona la selecció amb el controlador
+                      onDaySelected: eventController.onDaySelected,
                       onPageChanged: (focusedDay) {
                         eventController.focusedDay.value = focusedDay;
                       },
@@ -117,7 +116,7 @@ class CalendarScreen extends StatelessWidget {
                                   ),
                                   subtitle: Text(event.description),
                                   trailing: Text(
-                                    "${event.date.hour}:${event.date.minute.toString().padLeft(2, '0')}",
+                                    "${event.eventDate.hour}:${event.eventDate.minute.toString().padLeft(2, '0')}",
                                     style: TextStyle(color: Colors.black54),
                                   ),
                                 );
@@ -127,17 +126,110 @@ class CalendarScreen extends StatelessWidget {
                   ),
                 );
               }),
+
+
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Acció per afegir un nou esdeveniment
+          _showAddEventDialog(context);
         },
-        backgroundColor: Color(0xFF89AFAF),
-        child: Icon(Icons.add),
+        backgroundColor: const Color(0xFF89AFAF),
+        child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  void _showAddEventDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GetBuilder<EventController>(
+          builder: (eventController) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Center(
+                        child: Text(
+                          'Nou Esdeveniment',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF89AFAF),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextField(
+                        controller: eventController.nameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Nom',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: eventController.descriptionController,
+                        decoration: const InputDecoration(
+                          labelText: 'Descripció',
+                          border: OutlineInputBorder(),
+                        ),
+                        maxLines: 3,
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: eventController.dateController,
+                        decoration: const InputDecoration(
+                          labelText: 'Data (YYYY-MM-DD)',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: eventController.locationController,
+                        decoration: const InputDecoration(
+                          labelText: 'Ubicació',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: eventController.creatorController,
+                        decoration: const InputDecoration(
+                          labelText: 'Creador',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            await eventController.createEvent();
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF89AFAF),
+                          ),
+                          child: const Text('Crear Esdeveniment'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

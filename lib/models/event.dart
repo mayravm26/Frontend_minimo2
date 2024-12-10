@@ -1,13 +1,13 @@
 class EventModel {
   final String name;
   final String description;
-  final DateTime date;
+  final DateTime eventDate;
   final String creator;
 
   EventModel({
     required this.name,
     required this.description,
-    required this.date,
+    required this.eventDate,
     required this.creator,
   });
 
@@ -16,8 +16,18 @@ class EventModel {
     return EventModel(
       name: json['name'],
       description: json['description'],
-      date: DateTime.parse(json['date']),
+      eventDate: DateTime.parse(json['date']),
       creator: json['creator'],
     );
+  }
+
+  // Método toJson para enviar los datos de vuelta al backend si es necesario
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'description': description,
+      'eventDate': eventDate?.toIso8601String(),
+      'creator': creator
+    };
   }
 }
