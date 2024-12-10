@@ -12,6 +12,9 @@ import 'package:flutter_application_1/screen/perfilScreen.dart';
 import 'package:cloudinary_flutter/cloudinary_context.dart';
 //import 'package:cloudinary_flutter/image/cld_image.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
+import 'package:flutter_application_1/screen/calendarScreen.dart'; 
+
+
 void main() {
   CloudinaryContext.cloudinary = Cloudinary.fromCloudName(cloudName: "djen7vqby");
   Get.put(UserController());  // Esto asegura que el controlador se ponga en el GetX 'depósito'
@@ -51,11 +54,11 @@ class MyApp extends StatelessWidget {
         /*GetPage(
           name: '/mapa',
           page: () => BottomNavScaffold(child: PerfilScreen()),
-        ),
+        ),*/
         GetPage(
           name: '/calendario',
-          page: () => BottomNavScaffold(child: PerfilScreen()),
-        ),
+          page: () => BottomNavScaffold(child: CalendarScreen()),
+        ),/*
         GetPage(
           name: '/chat',
           page: () => BottomNavScaffold(child: PerfilScreen()),
