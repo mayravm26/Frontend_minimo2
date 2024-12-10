@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/userController.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart'; // Necesario para lanzar URL (como un teléfono)
 
 class HomePage extends StatefulWidget {
   @override
@@ -28,6 +29,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     super.dispose();
   }
 
+  // Función para abrir una llamada de emergencia
+  _contactEmergency() async {
+    const emergencyPhoneNumber = 'tel:6399845501'; // Número de teléfono de emergencia (puedes cambiarlo)
+    if (await canLaunch(emergencyPhoneNumber)) {
+      await launch(emergencyPhoneNumber);
+    } else {
+      throw 'No se puede realizar la llamada';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.put(UserController());
@@ -41,7 +52,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         child: Center(
           child: Container(
             padding: const EdgeInsets.all(20),
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 300), // Reducido el margen para hacerlo más estrecho
             decoration: BoxDecoration(
               color: const Color.fromARGB(194, 162, 204, 204), // Fondo del contenedor
               borderRadius: BorderRadius.circular(15),
@@ -83,11 +94,57 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       scale: _animation.value,
                       child: Image.asset(
                         'assets/icons/logo.png', // Ruta de la imagen
-                        height: 100, // Tamaño de la imagen
-                        width: 100,
+                        height: 80, // Tamaño de la imagen reducido
+                        width: 80,
                       ),
                     );
                   },
+                ),
+                const SizedBox(height: 20),
+                
+                // Sección de Próximos Eventos (desplegable)
+                const Text(
+                  'Próximos Eventos',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                // Desplegable de eventos
+                ExpansionTile(
+                  title: const Text(
+                    'Ver eventos próximos',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  ),
+                  children: List.generate(2, (index) {
+                    return Card(
+                      color: Colors.white,
+                      margin: const EdgeInsets.symmetric(vertical: 2),
+                      child: ListTile(
+                        title: Text('Evento ${index + 1}'),
+                        subtitle: Text('Fecha y hora del evento'),
+                        trailing: Icon(Icons.event),
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(height: 20),
+                
+                // Botón redondeado con ícono de SOS
+                ElevatedButton(
+                  onPressed: _contactEmergency,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(214, 255, 67, 67),
+                    shape: CircleBorder(), // Hace el botón redondeado
+                    padding: const EdgeInsets.all(20), // Padding para hacerlo grande
+                  ),
+                  child: const Icon(
+                    Icons.sos, // Ícono de SOS
+                    color: Colors.white, // Color blanco para el ícono
+                    size: 40, // Tamaño adecuado para el ícono
+                  ),
                 ),
               ],
             ),

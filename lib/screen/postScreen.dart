@@ -3,6 +3,7 @@ import 'package:flutter_application_1/controllers/postsListController.dart';  //
 import 'package:flutter_application_1/controllers/postController.dart';  // Controlador para crear el post
 import 'package:flutter_application_1/Widgets/postCard.dart';
 import 'package:get/get.dart';
+import 'dart:io';
 
 class PostsScreen extends StatefulWidget {
   @override
@@ -70,116 +71,118 @@ class _PostsScreenState extends State<PostsScreen> {
   }
 
   // Mostrar el cuadro de diálogo para crear un nuevo post
-  void _showAddPostDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),  // Bordes redondeados
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,  // Asegura que el contenido no ocupe más espacio del necesario
-              children: [
-                const Text(
-                  'Nuevo Post',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF89AFAF),
-                  ),
-                ),
-                const SizedBox(height: 20),  // Espacio entre el título y los campos
-                // Campo para el autor del post
-                TextField(
-                  controller: postController.ownerController,  // Usamos el controlador de owner
-                  decoration: InputDecoration(
-                    labelText: 'Autor',
-                    labelStyle: TextStyle(color: Color(0xFF89AFAF)),
-                    fillColor: Colors.grey[100],  // Fondo gris claro
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),  // Bordes redondeados
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Campo para la descripción del post
-                TextField(
-                  controller: postController.descriptionController,  // Usamos el controlador de description
-                  decoration: InputDecoration(
-                    labelText: 'Contenido',
-                    labelStyle: TextStyle(color: Color(0xFF89AFAF)),
-                    fillColor: Colors.grey[100],  // Fondo gris claro
-                    filled: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),  // Bordes redondeados
-                    ),
-                  ),
-                  maxLines: 3,
-                ),
-                const SizedBox(height: 16),
-                // Dropdown para seleccionar el tipo de post
-                Obx(() {
-                  return DropdownButton<String>(
-                    value: postController.postType.value.isEmpty ? null : postController.postType.value,
-                    hint: const Text(
-                      'Selecciona el tipo de post',
-                      style: TextStyle(color: Color(0xFF89AFAF)),
-                    ),
-                    onChanged: (String? newValue) {
-                      postController.postType.value = newValue ?? '';
-                    },
-                    items: <String>['', 'Libro', 'Película', 'Música', 'Serie', 'Otro']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    dropdownColor: Colors.white,  // Fondo blanco para el dropdown
-                    underline: Container(),  // Eliminar línea de subrayado
-                  );
-                }),
-                const SizedBox(height: 20),
-                // Botones para agregar o cancelar
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+ void _showAddPostDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return GetBuilder<PostController>(
+        builder: (postController) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();  // Cerrar el cuadro de diálogo sin hacer nada
-                      },
-                      child: const Text(
-                        'Cancelar',
-                        style: TextStyle(color: Color(0xFF89AFAF)),
+                    const Center(
+                      child: Text(
+                        'Nuevo Post',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF89AFAF),
+                        ),
                       ),
                     ),
+                    const SizedBox(height: 20),
+                    // Campo para el autor (owner)
+                    TextField(
+                      controller: postController.ownerController,
+                      decoration: const InputDecoration(
+                        labelText: 'Autor',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    // Campo para la descripción
+                    TextField(
+                      controller: postController.descriptionController,
+                      decoration: const InputDecoration(
+                        labelText: 'Descripción',
+                        border: OutlineInputBorder(),
+                      ),
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 16),
+                    // Campo para el tipo de post (Dropdown)
+                    // Dropdown para seleccionar el tipo de post
+                    Obx(() {
+                      return DropdownButton<String>(
+                        value: postController.postType.value.isEmpty ? null : postController.postType.value,
+                        hint: const Text(
+                          'Selecciona el tipo de post',
+                          style: TextStyle(color: Color(0xFF89AFAF)),
+                        ),
+                        onChanged: (String? newValue) {
+                          postController.postType.value = newValue ?? '';
+                        },
+                        items: <String>['', 'Libro', 'Película', 'Música', 'Serie', 'Otro']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        dropdownColor: Colors.white,  // Fondo blanco para el dropdown
+                        underline: Container(),  // Eliminar línea de subrayado
+                      );
+                    }),
+                    const SizedBox(height: 16),
+                    // Botón para seleccionar imagen
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        await postController.pickImage();
+                      },
+                      child: const Text('Seleccionar Imagen'),
+                    ),
+                    const SizedBox(height: 16),
+                    // Vista previa de la imagen seleccionada
+                    if (postController.selectedImage != null)
+                      Center(
+                        child: Image.memory(
+                          postController.selectedImage!,
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    const SizedBox(height: 20),
+                    // Botón para guardar el post
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () async {
                         // Llamar al método para crear el post
                         postController.createPost();
                         Navigator.of(context).pop();  // Cerrar el cuadro de diálogo después de crear el post
-                      },
-                      style: ElevatedButton.styleFrom(
-                         backgroundColor: const Color(0xFF89AFAF),  // Fondo verde
-                        foregroundColor: Colors.white,  // Color de texto blanco
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF89AFAF),
                         ),
+                        child: const Text('Crear Post'),
                       ),
-                      child: const Text('Agregar'),
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
-          ),
-        );
-      },
-    );
-  }
+          );
+        },
+      );
+    },
+  );
+}
 }

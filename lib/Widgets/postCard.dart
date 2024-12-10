@@ -102,6 +102,8 @@ class PostCard extends StatelessWidget {
                 ],
               ),
             ),
+            // Add space between the text and the image
+            const SizedBox(width: 12), // Adds space between the content and image
             // Imagen alineada a la derecha
             if (post.image != null)
               ClipRRect(
@@ -109,8 +111,8 @@ class PostCard extends StatelessWidget {
                 child: Image.network(
                   post.image!,
                   fit: BoxFit.cover,
-                  height: 100,
-                  width: 100,
+                  height: 200,
+                  width: 250,
                   errorBuilder: (context, error, stackTrace) => const Icon(
                     Icons.broken_image,
                     size: 100,
