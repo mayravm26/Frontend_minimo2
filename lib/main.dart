@@ -9,6 +9,7 @@ import 'package:flutter_application_1/screen/register.dart';
 //import 'package:flutter_application_1/screen/user.dart';
 import 'package:flutter_application_1/screen/home.dart';
 import 'package:flutter_application_1/screen/perfilScreen.dart';
+import 'package:flutter_application_1/screen/mapScreen.dart';
 import 'package:cloudinary_flutter/cloudinary_context.dart';
 //import 'package:cloudinary_flutter/image/cld_image.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
@@ -51,10 +52,10 @@ class MyApp extends StatelessWidget {
           name: '/posts',
           page: () => BottomNavScaffold(child: PostsScreen()),
         ),
-        /*GetPage(
+        GetPage(
           name: '/mapa',
-          page: () => BottomNavScaffold(child: PerfilScreen()),
-        ),*/
+          page: () => BottomNavScaffold(child: MapScreen()),
+        ),
         GetPage(
           name: '/calendario',
           page: () => BottomNavScaffold(child: CalendarScreen()),
