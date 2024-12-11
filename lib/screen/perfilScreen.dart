@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
+import 'package:flutter_application_1/services/userServices.dart';
 
 class PerfilScreen extends StatefulWidget {
   @override
@@ -9,6 +11,8 @@ class PerfilScreen extends StatefulWidget {
 class _PerfilScreenState extends State<PerfilScreen> {
   String? _username;
   String? _email;
+
+  final UserService userService = Get.put(UserService());
 
   @override
   void initState() {
@@ -113,7 +117,24 @@ class _PerfilScreenState extends State<PerfilScreen> {
 
   // Ruta para cada botón de la pantalla de perfil
   void _onButtonPressed(BuildContext context, String route) {
-    // Aquí puedes implementar la navegación a otras pantallas
-    print('Navegando a $route');
+    if (route == 'Cerrar Sesión') {
+      _logOut(context);
+    } else {
+      print('Navegando a $route');
+    }
+  }
+
+  // Método para cerrar sesión
+  void _logOut(BuildContext context) async {
+    try {
+      // Llamar al método de logOut desde UserService
+      await userService.logOut();
+      Get.snackbar('Éxito', 'Has cerrado sesión correctamente');
+
+      // Redirigir al usuario a la pantalla de inicio de sesión
+      Get.offAllNamed('/login');
+    } catch (e) {
+      Get.snackbar('Error', 'Hubo un problema al cerrar sesión');
+    }
   }
 }

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter_application_1/services/userServices.dart';
 import 'package:flutter_application_1/models/user.dart';
 
-
 class UserController extends GetxController {
   final UserService userService = Get.put(UserService());
 
@@ -49,7 +48,7 @@ class UserController extends GetxController {
 
       print('el response data es:${ responseData}');
 
-      if (responseData != null) {
+      if (responseData == 200) {
         // Manejo de respuesta exitosa
         Get.snackbar('Éxito', 'Inicio de sesión exitoso');
         Text('Bienvenido, ${user.value?.name ?? "Cargando..."}');
@@ -64,6 +63,17 @@ class UserController extends GetxController {
     }
   }
 
+  // Método para cerrar sesión
+  void logOut() async {
+    try {
+      // Llamada al servicio para cerrar sesión
+      await userService.logOut();
+      Get.snackbar('Éxito', 'Has cerrado sesión correctamente');
 
-
+      // Redirigir al usuario a la pantalla de login
+      Get.offAllNamed('/login');
+    } catch (e) {
+      Get.snackbar('Error', 'Hubo un problema al cerrar sesión');
+    }
+  }
 }

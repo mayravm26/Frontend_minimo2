@@ -6,7 +6,6 @@ import 'package:jwt_decoder/jwt_decoder.dart'; // Para decodificar el JWT
 
 class UserService {
   final String baseUrl = "http://127.0.0.1:3000/api"; // URL de tu backend Web
-  //final String baseUrl = "http://10.0.2.2:3000"; // URL de tu backend Android
   final Dio dio = Dio(); // Usa el prefijo 'Dio' para referenciar la clase Dio
   var statusCode;
   var data;
@@ -27,6 +26,18 @@ class UserService {
     }
   }
 
+  // Método para cerrar sesión
+  Future<void> logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');  // Eliminar el token
+    await prefs.remove('user_id'); // Eliminar el ID del usuario
+    await prefs.remove('username'); // Eliminar el nombre del usuario
+    await prefs.remove('email'); // Eliminar el email del usuario
+    await prefs.remove('is_admin'); // Eliminar el estado de admin
+
+    print('Usuario cerrado sesión y datos eliminados de SharedPreferences.');
+  }
+
   Future<int> logIn(logIn) async {
     try {
       print('Enviando solicitud de LogIn');
@@ -45,7 +56,7 @@ class UserService {
         await prefs.setString('token', token);
         await prefs.setString('user_id', decodedToken['id'] ?? ''); // Manejar `null`
         await prefs.setString('username', decodedToken['username'] ?? '');
-         await prefs.setString('email', decodedToken['email'] ?? '');
+        await prefs.setString('email', decodedToken['email'] ?? '');
         await prefs.setBool('is_admin', decodedToken['admin'] ?? true);
 
         print('Token y datos guardados en SharedPreferences.');
@@ -59,6 +70,7 @@ class UserService {
       return -1;
     }
   }
+
   Map<String, dynamic> logInToJson(logIn) {
     return {'username': logIn.username, 
     'password': logIn.password};
@@ -125,7 +137,6 @@ class UserService {
       throw e; // Relanzar el error para que el llamador pueda manejarlo
     }
   }
-
 
   Future<int> EditUser(UserModel newUser, String id) async {
     print('createUser');
