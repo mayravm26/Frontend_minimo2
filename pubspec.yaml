@@ -54,6 +54,9 @@ dependencies:
   latlong2: ^0.8.0
   flutter_map_marker_popup: ^5.0.0
 
+  # Paquet llibreria geocoding per passar d'una adreça a coordenades
+  geocoding: ^2.0.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

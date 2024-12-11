@@ -111,7 +111,7 @@ class UbiService {
         print('Ubication deleted successfully');
         return 200; // Ubicació eliminada 
       } else if (statusCode == 404) {
-        print('Event not found');
+        print('Ubication not found');
         return 404; // Ubicació no trobada
       } else if (statusCode == 500) {
         print('Server error');

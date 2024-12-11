@@ -8,7 +8,8 @@ import 'package:flutter_application_1/models/ubi.dart';
 class MapScreen extends StatelessWidget {
   final UbiController ubiController =
       Get.put(UbiController()); // Obtenim el controlador
-  RxList<UbiModel> selectedUbications = RxList<UbiModel>([]); // Llista d'ubicacions seleccionades
+  RxList<UbiModel> selectedUbications =
+      RxList<UbiModel>([]); // Llista d'ubicacions seleccionades
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +108,8 @@ class MapScreen extends StatelessWidget {
                           ),
                           GestureDetector(
                             onTap: () {
-                              selectedUbications.remove(ubi); // Elimina la caixa
+                              selectedUbications
+                                  .remove(ubi); // Elimina la caixa
                             },
                             child: const Icon(
                               Icons.close,
@@ -120,22 +122,31 @@ class MapScreen extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         'Nom: ${ubi.name}',
-                        style: const TextStyle(fontSize: 14, color: Colors.black),
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.black),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'Tipus: ${ubi.tipo}',
-                        style: const TextStyle(fontSize: 14, color: Colors.black),
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.black),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'Horari: ${ubi.horari}',
-                        style: const TextStyle(fontSize: 14, color: Colors.black),
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.black),
+                      ),
+                      Text(
+                        'Adreça: ${ubi.address}',
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.black),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         'Comentari: ${ubi.comentari}',
-                        style: const TextStyle(fontSize: 14, color: Colors.black),
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.black),
                       ),
                     ],
                   ),

@@ -17,6 +17,7 @@ class UbiController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController latitudeController = TextEditingController();
   TextEditingController longitudeController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
   TextEditingController tipoController = TextEditingController();
   TextEditingController comentariController = TextEditingController();
   TextEditingController horariController = TextEditingController();
@@ -45,12 +46,13 @@ class UbiController extends GetxController {
     final name = nameController.text.trim();
     final latitude = latitudeController.text.trim();
     final longitude = longitudeController.text.trim();
+    final address = addressController.text.trim();
     final comentari = comentariController.text.trim();
     final tipo = tipoController.text.trim();
     final horari = horariController.text.trim();
 
   
-    if (name.isEmpty || latitude.isEmpty || longitude.isEmpty || comentari.isEmpty  || tipo.isEmpty || horari.isEmpty) {
+    if (name.isEmpty || latitude.isEmpty || longitude.isEmpty || address.isEmpty || comentari.isEmpty  || tipo.isEmpty || horari.isEmpty) {
       Get.snackbar("Error", "Tots els camps són obligatoris");
       return;
     }
@@ -67,6 +69,7 @@ class UbiController extends GetxController {
         name: name,
         horari: horari,
         tipo: tipo,
+        address: address,
         ubication: ubication,
         comentari: comentari,
       ));
@@ -87,11 +90,12 @@ class UbiController extends GetxController {
     final name = nameController.text.trim();
     final latitude = latitudeController.text.trim();
     final longitude = longitudeController.text.trim();
+    final address = addressController.text.trim();
     final comentari = comentariController.text.trim();
     final tipo = tipoController.text.trim();
     final horari = horariController.text.trim();
 
-    if (name.isEmpty || latitude.isEmpty || longitude.isEmpty || comentari.isEmpty  || tipo.isEmpty || horari.isEmpty) {
+    if (name.isEmpty || latitude.isEmpty || longitude.isEmpty || address.isEmpty || comentari.isEmpty  || tipo.isEmpty || horari.isEmpty) {
       Get.snackbar("Error", "Tots els camps són obligatoris");
       return;
     }
@@ -108,6 +112,7 @@ class UbiController extends GetxController {
         name: name,
         horari: horari,
         tipo: tipo,
+        address: address,
         ubication: ubication,
         comentari: comentari,
       ), id);
@@ -141,6 +146,7 @@ class UbiController extends GetxController {
     nameController.clear();
     latitudeController.clear();
     longitudeController.clear();
+    addressController.clear();
     comentariController.clear();
     tipoController.clear();
     horariController.clear();
