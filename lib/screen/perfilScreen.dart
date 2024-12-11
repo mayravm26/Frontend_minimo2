@@ -123,11 +123,35 @@ class _PerfilScreenState extends State<PerfilScreen> {
     if (route == 'Cerrar Sesión') {
       _logOut(context);
     } else if (route == 'Configuración') {
-      // Navegar a la pantalla de configuración
-      Get.to(() => ConfiguracionScreen());
+      // Mostrar la pantalla de configuración como un diálogo emergente
+      _showConfiguracionDialog(context);
     } else {
       print('Navegando a $route');
     }
+  }
+
+  // Método para mostrar el diálogo emergente de configuración
+  void _showConfiguracionDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20), // Borde redondeado
+          ),
+          elevation: 10, // Sombra para darle profundidad
+          backgroundColor: Colors.white, // Fondo blanco para el diálogo
+          child: Container(
+            padding: const EdgeInsets.all(16), // Padding alrededor de la pantalla de configuración
+            constraints: BoxConstraints(
+              maxWidth: 400, // Ancho máximo para el diálogo
+              minHeight: 300, // Alto mínimo
+            ),
+            child: ConfiguracionScreen(),  // Aquí se muestra la Configuración en el diálogo
+          ),
+        );
+      },
+    );
   }
 
   // Método para cerrar sesión

@@ -22,6 +22,7 @@ class UserController extends GetxController {
   Future<void> fetchUser(String id) async {
     try {
       final fetchedUser = await userService.getUser(id);
+      print("fetch $fetchedUser");
       if (fetchedUser != null) {
         user.value = fetchedUser;
       } else {
