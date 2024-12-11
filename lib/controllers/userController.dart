@@ -18,6 +18,36 @@ class UserController extends GetxController {
   // Usando Rxn para que sea nullable (inicialmente vacío)
   var user = Rxn<UserModel>();
 
+// Método para obtener un usuario por su ID
+  Future<void> fetchUser(String id) async {
+    try {
+      final fetchedUser = await userService.getUser(id);
+      if (fetchedUser != null) {
+        user.value = fetchedUser;
+      } else {
+        Get.snackbar('Error', 'Usuario no encontrado');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'No se pudo obtener el usuario');
+      print('Error al obtener el usuario: $e');
+    }
+  }
+
+  // Método para editar un usuario
+  void editUser(UserModel updatedUser, String id) async {
+    try {
+      final result = await userService.EditUser(updatedUser, id);
+      if (result == 201) {
+        user.value = updatedUser; // Actualizar el estado reactivo
+        Get.snackbar('Éxito', 'Usuario actualizado correctamente');
+      } else {
+        Get.snackbar('Error', 'No se pudo actualizar el usuario');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Error al actualizar el usuario');
+      print('Error al actualizar el usuario: $e');
+    }
+  }
   // Toggle password visibility
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;

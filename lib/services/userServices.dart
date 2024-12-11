@@ -218,6 +218,23 @@ class UserService {
       return -1;
     }
   }
+  
+  Future<UserModel?> getUser(String id) async {
+  try {
+    print('Fetching user with ID: $id');
+    Response response = await dio.get('$baseUrl/user/$id');
+    if (response.statusCode == 200) {
+      print('User data fetched: ${response.data}');
+      return UserModel.fromJson(response.data);
+    } else {
+      print('Failed to fetch user. Status code: ${response.statusCode}');
+      return null;
+    }
+  } catch (e) {
+    print('Error fetching user: $e');
+    throw e;
+  }
+}
 
   // Método para obtener un usuario por su ID
   /*Future<UserModel?> getUserById(String id) async {

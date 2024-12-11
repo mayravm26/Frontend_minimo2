@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart';
 import 'package:flutter_application_1/services/userServices.dart';
+import 'package:flutter_application_1/controllers/userController.dart'; // Controlador para crear el post
+import 'configurationScreen.dart'; // Importamos la nueva pantalla de configuración
 
 class PerfilScreen extends StatefulWidget {
   @override
@@ -13,6 +15,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
   String? _email;
 
   final UserService userService = Get.put(UserService());
+  final UserController userController = Get.put(UserController());  // Controlador para crear post
 
   @override
   void initState() {
@@ -119,6 +122,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
   void _onButtonPressed(BuildContext context, String route) {
     if (route == 'Cerrar Sesión') {
       _logOut(context);
+    } else if (route == 'Configuración') {
+      // Navegar a la pantalla de configuración
+      Get.to(() => ConfiguracionScreen());
     } else {
       print('Navegando a $route');
     }
