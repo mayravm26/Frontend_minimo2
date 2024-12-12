@@ -31,7 +31,7 @@ dependencies:
   get: ^4.6.5
   flutter:
     sdk: flutter
-  http: ^0.13.4
+  http: ^0.13.5
   provider: ^6.0.3
   shared_preferences: ^2.0.0
   jwt_decoder: ^2.0.1
@@ -50,6 +50,14 @@ dependencies:
   dio: ^5.7.0
   cloudinary_flutter: ^1.0.0
   cloudinary_url_gen: ^1.0.0
+
+  # Paquets per OpenStreetMap i marcadors amb pop-ups
+  flutter_map: ^4.0.0
+  latlong2: ^0.8.0
+  flutter_map_marker_popup: ^5.0.0
+
+  # Paquet llibreria geocoding per passar d'una adreça a coordenades
+  geocoding: ^2.0.4
 
 dev_dependencies:
   flutter_test:
