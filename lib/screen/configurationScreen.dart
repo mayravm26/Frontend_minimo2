@@ -130,7 +130,7 @@ Future<void> _deleteUser() async {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirmar eliminación'),
+          title: const Text('¿Estas Seguro?'),
           content: const Text('¿Estás seguro de que deseas eliminar tu cuenta? Esta acción es irreversible.'),
           actions: [
             TextButton(

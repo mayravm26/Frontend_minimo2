@@ -86,6 +86,13 @@ class RegisterController extends GetxController {
       Get.snackbar('Error', errorMessage.value, snackPosition: SnackPosition.BOTTOM);
       return;
     }
+    
+    // Validación de longitud mínima de contraseña
+    if (passwordController.text.length < 7) {
+      errorMessage.value = 'La contraseña debe tener al menos 7 caracteres';
+      Get.snackbar('Error', errorMessage.value, snackPosition: SnackPosition.BOTTOM);
+      return;
+    }
 
     // Validación de formato de correo electrónico
     if (!GetUtils.isEmail(emailController.text)) {

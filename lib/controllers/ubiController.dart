@@ -44,15 +44,15 @@ class UbiController extends GetxController {
   //Crear una nova ubicació
   Future<void> createUbi() async {
     final name = nameController.text.trim();
-    final latitude = latitudeController.text.trim();
-    final longitude = longitudeController.text.trim();
+    final latitud = latitudeController.text.trim();
+    final longitud = longitudeController.text.trim();
     final address = addressController.text.trim();
     final comentari = comentariController.text.trim();
     final tipo = tipoController.text.trim();
     final horari = horariController.text.trim();
 
   
-    if (name.isEmpty || latitude.isEmpty || longitude.isEmpty || address.isEmpty || comentari.isEmpty  || tipo.isEmpty || horari.isEmpty) {
+    if (name.isEmpty || latitud.isEmpty || longitud.isEmpty || address.isEmpty || comentari.isEmpty  || tipo.isEmpty || horari.isEmpty) {
       Get.snackbar("Error", "Tots els camps són obligatoris");
       return;
     }
@@ -61,16 +61,16 @@ class UbiController extends GetxController {
       isLoading.value = true;
 
       final ubication = {
-        'latitude': double.parse(latitude),
-        'longitude': double.parse(longitude),
+        'latitud': double.parse(latitud),
+        'longitud': double.parse(longitud),
       };
         
       await ubiService.createUbi(UbiModel(
         name: name,
         horari: horari,
         tipo: tipo,
-        address: address,
         ubication: ubication,
+        address: address,
         comentari: comentari,
       ));
 

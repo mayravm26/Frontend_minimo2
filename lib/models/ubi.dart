@@ -2,16 +2,16 @@ class UbiModel {
   final String name;
   final String horari;
   final String tipo;
-  final String address;
   final Map<String, double> ubication;
+  final String address;
   final String comentari;
 
   UbiModel({
     required this.name,
     required this.horari,
     required this.tipo,
-    required this.address,
     required this.ubication,
+    required this.address,
     required this.comentari,
   });
 
@@ -21,8 +21,8 @@ class UbiModel {
       name: json['name'],
       horari: json['horari'],
       tipo: json['tipo'],
-      address: json['address'],
       ubication: Map<String, double>.from(json['ubication']),
+      address: json['address'],
       comentari: json['comentari'],
     );
   }
@@ -33,8 +33,8 @@ class UbiModel {
       'name': name,
       'horari': horari,
       'tipo': tipo,
-      'address': address,
       'ubication': ubication,
+      'address': address,
       'comentari': comentari,
     };
   }
