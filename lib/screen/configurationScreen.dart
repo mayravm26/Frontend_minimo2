@@ -12,6 +12,8 @@ class ConfiguracionScreen extends StatefulWidget {
 
 class _ConfiguracionScreenState extends State<ConfiguracionScreen> {
   String? _userId; // Para almacenar la ID del usuario
+  String? _username;
+  String? _email;
 
   final UserController userController = Get.find<UserController>();  // Obtén el controlador
   final UserService userService = Get.find<UserService>(); // Instancia del servicio
@@ -55,36 +57,49 @@ class _ConfiguracionScreenState extends State<ConfiguracionScreen> {
   }
 
   // Función para guardar la configuración
-  void _saveConfiguration() {
-    String newUsername = _usernameController.text.trim();
-    String newName = _nameController.text.trim();
-    String newEmail = _emailController.text.trim();
-    String newPassword = _passController.text.trim();
+ void _saveConfiguration() async {
+  String newUsername = _usernameController.text.trim();
+  String newName = _nameController.text.trim();
+  String newEmail = _emailController.text.trim();
+  String newPassword = _passController.text.trim();
 
-    if (newUsername.isEmpty || newEmail.isEmpty || newPassword.isEmpty) {
-      Get.snackbar('Error', 'Los campos no pueden estar vacíos');
-    } else if (_userId == null) {
-      Get.snackbar('Error', 'No se pudo obtener la ID del usuario');
-    } else {
-      // Crear un nuevo objeto UserModel con los datos actualizados
-      UserModel updatedUser = UserModel(
-        username: newUsername.isNotEmpty ? newUsername : userController.user.value!.username,
-        name: newName.isNotEmpty ? newName : userController.user.value!.name,
-        email: newEmail.isNotEmpty ? newEmail : userController.user.value!.email,
-        password: newPassword.isNotEmpty ? newPassword : userController.user.value!.password,
-        actualUbication: userController.user.value!.actualUbication, // Mantener los valores fijos
-        inHome: userController.user.value!.inHome,
-        admin: userController.user.value!.admin,
-        disabled: userController.user.value!.disabled,
-      );
+  if (newUsername.isEmpty || newEmail.isEmpty || newPassword.isEmpty) {
+    Get.snackbar('Error', 'Los campos no pueden estar vacíos');
+  } else if (_userId == null) {
+    Get.snackbar('Error', 'No se pudo obtener la ID del usuario');
+  } else {
+    // Crear un nuevo objeto UserModel con los datos actualizados
+    UserModel updatedUser = UserModel(
+      username: newUsername.isNotEmpty ? newUsername : userController.user.value!.username,
+      name: newName.isNotEmpty ? newName : userController.user.value!.name,
+      email: newEmail.isNotEmpty ? newEmail : userController.user.value!.email,
+      password: newPassword.isNotEmpty ? newPassword : userController.user.value!.password,
+      actualUbication: userController.user.value!.actualUbication, // Mantener los valores fijos
+      inHome: userController.user.value!.inHome,
+      admin: userController.user.value!.admin,
+      disabled: userController.user.value!.disabled,
+    );
 
-      // Llamar al método editUser para actualizar el usuario
-      userController.editUser(updatedUser, _userId!);
+    // Llamar al método editUser para actualizar el usuario
+    userController.editUser(updatedUser, _userId!);
 
-      // Volver a la pantalla anterior
-      Navigator.pop(context);
-    }
+    // Guardar los valores en SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', newUsername);
+    await prefs.setString('email', newEmail);
+
+    // Actualizar la pantalla principal
+    setState(() {
+      _username = newUsername;
+      _email = newEmail;
+    });
+
+    // Mostrar confirmación y cerrar el diálogo
+    Get.snackbar('Éxito', 'Configuración guardada correctamente');
+    Navigator.pop(context);
   }
+}
+
 
 // Método para eliminar el usuario
 Future<void> _deleteUser() async {

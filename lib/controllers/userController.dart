@@ -38,9 +38,15 @@ class UserController extends GetxController {
   void editUser(UserModel updatedUser, String id) async {
     try {
       final result = await userService.EditUser(updatedUser, id);
-      if (result == 201) {
+      print("result: $result");
+      if (result == 200) {
         user.value = updatedUser; // Actualizar el estado reactivo
         Get.snackbar('Éxito', 'Usuario actualizado correctamente');
+        if (user.value != null) {
+          usernameController.text = user.value!.username; // Usa el valor si no es nulo
+          
+        }
+
       } else {
         Get.snackbar('Error', 'No se pudo actualizar el usuario');
       }
