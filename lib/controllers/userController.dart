@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:flutter_application_1/services/userServices.dart';
 import 'package:flutter_application_1/models/user.dart';
 
-
 class UserController extends GetxController {
   final UserService userService = Get.put(UserService());
 
@@ -19,6 +18,43 @@ class UserController extends GetxController {
   // Usando Rxn para que sea nullable (inicialmente vacío)
   var user = Rxn<UserModel>();
 
+// Método para obtener un usuario por su ID
+  Future<void> fetchUser(String id) async {
+    try {
+      final fetchedUser = await userService.getUser(id);
+      print("fetch $fetchedUser");
+      if (fetchedUser != null) {
+        user.value = fetchedUser;
+      } else {
+        Get.snackbar('Error', 'Usuario no encontrado');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'No se pudo obtener el usuario');
+      print('Error al obtener el usuario: $e');
+    }
+  }
+
+  // Método para editar un usuario
+  void editUser(UserModel updatedUser, String id) async {
+    try {
+      final result = await userService.EditUser(updatedUser, id);
+      print("result: $result");
+      if (result == 200) {
+        user.value = updatedUser; // Actualizar el estado reactivo
+        Get.snackbar('Éxito', 'Usuario actualizado correctamente');
+        if (user.value != null) {
+          usernameController.text = user.value!.username; // Usa el valor si no es nulo
+          
+        }
+
+      } else {
+        Get.snackbar('Error', 'No se pudo actualizar el usuario');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Error al actualizar el usuario');
+      print('Error al actualizar el usuario: $e');
+    }
+  }
   // Toggle password visibility
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;
@@ -64,6 +100,17 @@ class UserController extends GetxController {
     }
   }
 
+  // Método para cerrar sesión
+  void logOut() async {
+    try {
+      // Llamada al servicio para cerrar sesión
+      await userService.logOut();
+      Get.snackbar('Éxito', 'Has cerrado sesión correctamente');
 
-
+      // Redirigir al usuario a la pantalla de login
+      Get.offAllNamed('/login');
+    } catch (e) {
+      Get.snackbar('Error', 'Hubo un problema al cerrar sesión');
+    }
+  }
 }
