@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/controllers/userController.dart';
+import 'package:flutter_application_1/controllers/eventController.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart'; // Necesario para lanzar URL (como un teléfono)
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_application_1/screen/calendarScreen.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -11,6 +14,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+  final EventController eventController = Get.put(EventController()); // Instancia de EventController
 
   @override
   void initState() {
@@ -20,7 +24,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       vsync: this,
     )..repeat(reverse: true);
 
-    _animation = Tween<double>(begin: 1.0, end: 1.1).animate(_controller); // Animación más sutil
+    _animation = Tween<double>(begin: 1.0, end: 1.1).animate(_controller);
+
+    // Cargar eventos al iniciar
+    eventController.fetchEvents();
   }
 
   @override
@@ -31,7 +38,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   // Función para abrir una llamada de emergencia
   _contactEmergency() async {
-    const emergencyPhoneNumber = 'tel:6399845501'; // Número de teléfono de emergencia (puedes cambiarlo)
+    const emergencyPhoneNumber = 'tel:6399845501';
     if (await canLaunch(emergencyPhoneNumber)) {
       await launch(emergencyPhoneNumber);
     } else {
@@ -45,16 +52,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
-        backgroundColor: const Color(0xFF89AFAF), // Color de la AppBar
+        backgroundColor: const Color(0xFF89AFAF),
       ),
       body: Container(
-        color: const Color(0xFFE0F7FA), // Fondo de la pantalla
+        color: const Color(0xFFE0F7FA),
         child: Center(
           child: Container(
             padding: const EdgeInsets.all(20),
-            margin: const EdgeInsets.symmetric(horizontal: 300), // Reducido el margen para hacerlo más estrecho
+            margin: const EdgeInsets.symmetric(horizontal: 300),
             decoration: BoxDecoration(
-              color: const Color.fromARGB(194, 162, 204, 204), // Fondo del contenedor
+              color: const Color.fromARGB(194, 162, 204, 204),
               borderRadius: BorderRadius.circular(15),
               boxShadow: const [
                 BoxShadow(
@@ -72,7 +79,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white, // Color del texto
+                    color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -81,28 +88,25 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   'Ens alegra tenir-te aquí. Gaudeix d\'aquesta aplicació i mantén la teva comunitat segura.',
                   style: TextStyle(
                     fontSize: 16,
-                    color: Colors.white70, // Color de la frase secundaria
+                    color: Colors.white70,
                   ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
-                // Imagen animada
                 AnimatedBuilder(
                   animation: _animation,
                   builder: (context, child) {
                     return Transform.scale(
                       scale: _animation.value,
                       child: Image.asset(
-                        'assets/icons/logo.png', // Ruta de la imagen
-                        height: 80, // Tamaño de la imagen reducido
+                        'assets/icons/logo.png',
+                        height: 80,
                         width: 80,
                       ),
                     );
                   },
                 ),
                 const SizedBox(height: 20),
-                
-                // Sección de Próximos Eventos (desplegable)
                 const Text(
                   'Próximos Eventos',
                   style: TextStyle(
@@ -112,38 +116,52 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Desplegable de eventos
-                ExpansionTile(
-                  title: const Text(
-                    'Ver eventos próximos',
-                    style: TextStyle(fontSize: 16, color: Colors.black),
-                  ),
-                  children: List.generate(2, (index) {
-                    return Card(
-                      color: Colors.white,
-                      margin: const EdgeInsets.symmetric(vertical: 2),
-                      child: ListTile(
-                        title: Text('Evento ${index + 1}'),
-                        subtitle: Text('Fecha y hora del evento'),
-                        trailing: Icon(Icons.event),
+                // Desplegable dinámico para eventos
+                Obx(() {
+                  if (eventController.isLoading.value) {
+                    return const CircularProgressIndicator();
+                  } else if (eventController.events.isEmpty) {
+                    return const Text('No hay eventos próximos');
+                  } else {
+                    return ExpansionTile(
+                      title: const Text(
+                        'Ver eventos próximos',
+                        style: TextStyle(fontSize: 16, color: Colors.black),
                       ),
+                      children: eventController.events.map((event) {
+                        return Card(
+                          color: Colors.white,
+                          margin: const EdgeInsets.symmetric(vertical: 2),
+                          child: ListTile(
+                            title: Text(event.name),
+                            subtitle: Text(
+                              DateFormat('yyyy-MM-dd').format(event.eventDate),
+                            ),
+                            trailing: const Icon(Icons.event),
+                            onTap: () {
+                              // Navegar a la pantalla de calendario
+                              Get.to(() => CalendarScreen(), arguments: {
+                                'selectedDay': event.eventDate,
+                              });
+                            },
+                          ),
+                        );
+                      }).toList(),
                     );
-                  }),
-                ),
+                  }
+                }),
                 const SizedBox(height: 20),
-                
-                // Botón redondeado con ícono de SOS
                 ElevatedButton(
                   onPressed: _contactEmergency,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(214, 255, 67, 67),
-                    shape: CircleBorder(), // Hace el botón redondeado
-                    padding: const EdgeInsets.all(20), // Padding para hacerlo grande
+                    backgroundColor: const Color.fromARGB(214, 255, 67, 67),
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(20),
                   ),
                   child: const Icon(
-                    Icons.sos, // Ícono de SOS
-                    color: Colors.white, // Color blanco para el ícono
-                    size: 40, // Tamaño adecuado para el ícono
+                    Icons.sos,
+                    color: Colors.white,
+                    size: 40,
                   ),
                 ),
               ],
