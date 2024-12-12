@@ -84,7 +84,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
                 // Botones debajo de la foto de perfil
                 _buildProfileButton(context, 'Configuración'),
                 const SizedBox(height: 10),
-                _buildProfileButton(context, 'Mis Posts'),
+                //_buildProfileButton(context, 'Mis Posts'),
                 const SizedBox(height: 10),
                 _buildProfileButton(context, 'Cerrar Sesión'),
               ],
@@ -144,8 +144,8 @@ class _PerfilScreenState extends State<PerfilScreen> {
           child: Container(
             padding: const EdgeInsets.all(16), // Padding alrededor de la pantalla de configuración
             constraints: BoxConstraints(
-              maxWidth: 400, // Ancho máximo para el diálogo
-              minHeight: 300, // Alto mínimo
+              maxWidth: 500, // Ancho máximo para el diálogo
+              minHeight: 100, // Alto mínimo
             ),
             child: ConfiguracionScreen(),  // Aquí se muestra la Configuración en el diálogo
           ),

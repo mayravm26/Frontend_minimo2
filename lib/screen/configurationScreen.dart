@@ -90,14 +90,15 @@ class _ConfiguracionScreenState extends State<ConfiguracionScreen> {
 Future<void> _deleteUser() async {
   if (_userId != null) {
     int success = await userService.deleteUser(_userId!);
-    if (success == 1) {
+    print("success: $success");
+    if (success == 200) {
       Get.snackbar('Éxito', 'Usuario eliminado correctamente');
 
       // Eliminar los datos locales almacenados en SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove('user_id'); // Elimina el ID de usuario
       await prefs.remove('user_data'); // Elimina otros datos del usuario si los tienes almacenados
-
+      await userService.logOut();
       // Redirigir a la pantalla de inicio de sesión después de la eliminación
       Get.offAllNamed('/login');
     } else {
