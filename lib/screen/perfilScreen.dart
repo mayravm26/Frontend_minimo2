@@ -131,28 +131,48 @@ class _PerfilScreenState extends State<PerfilScreen> {
   }
 
   // Método para mostrar el diálogo emergente de configuración
-  void _showConfiguracionDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20), // Borde redondeado
+  void _showConfiguracionDialog(BuildContext context) async {
+  final result = await showDialog<Map<String, String>>(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20), // Borde redondeado
+        ),
+        elevation: 10, // Sombra para darle profundidad
+        backgroundColor: Colors.white, // Fondo blanco para el diálogo
+        child: Container(
+          padding: const EdgeInsets.all(16), // Padding alrededor de la pantalla de configuración
+          width: 500, // Ancho del diálogo
+          height: 500,
+          constraints: BoxConstraints(
+            //maxWidth: 500, // Ancho máximo para el diálogo
+            //minHeight: 100, // Alto mínimo
           ),
-          elevation: 10, // Sombra para darle profundidad
-          backgroundColor: Colors.white, // Fondo blanco para el diálogo
-          child: Container(
-            padding: const EdgeInsets.all(16), // Padding alrededor de la pantalla de configuración
-            constraints: BoxConstraints(
-              maxWidth: 500, // Ancho máximo para el diálogo
-              minHeight: 100, // Alto mínimo
-            ),
-            child: ConfiguracionScreen(),  // Aquí se muestra la Configuración en el diálogo
-          ),
-        );
-      },
-    );
+          child: ConfiguracionScreen(), // Pantalla de configuración
+        ),
+      );
+    },
+  );
+
+  if (result != null) {
+    // Actualizar SharedPreferences con los nuevos valores
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', result['username'] ?? '');
+    await prefs.setString('email', result['email'] ?? '');
+
+    // Refrescar los valores en pantalla
+    setState(() {
+      _username = result['username'];
+      _email = result['email'];
+    });
   }
+}
+
+
+void closeWithResult(BuildContext context, String newUsername, String newEmail) {
+  Navigator.of(context).pop({'username': newUsername, 'email': newEmail});
+}
 
   // Método para cerrar sesión
   void _logOut(BuildContext context) async {

@@ -152,68 +152,123 @@ Future<void> _deleteUser() async {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Configuración de Perfil"),
-        backgroundColor: const Color(0xFF89AFAF),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: const Color(0xFFE5E5E5), // Color de fondo de la pantalla
+    body: Center( // Centrar todo el contenido
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Contenedor superior con esquinas redondeadas
+          Container(
+            width: 500, // Ancho del contenedor
+            decoration: BoxDecoration(
+              color: const Color(0xFF89AFAF), // Color del AppBar
+              borderRadius: BorderRadius.circular(20.0), // Bordes redondeados en las 4 esquinas
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 5,
+                  blurRadius: 10,
+                  offset: const Offset(0, 3), // Sombra suave
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Text(
+                "Configuración de Perfil",
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16), // Separación entre el contenedor superior y el formulario
+          // Contenedor principal con el formulario
+          Container(
+            width: 500,
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.0), // Redondear solo las esquinas del formulario
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 5,
+                  blurRadius: 10,
+                  offset: const Offset(0, 3), // Sombra suave
+                ),
+              ],
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextField(
+                    controller: _usernameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Nombre de Usuario',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Nombre Completo',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      labelText: 'Correo Electrónico',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextField(
+                    controller: _passController,
+                    decoration: const InputDecoration(
+                      labelText: 'Contraseña',
+                      border: OutlineInputBorder(),
+                    ),
+                    obscureText: true, // Para ocultar la contraseña
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _saveConfiguration, // Guardar configuración
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF89AFAF),
+                      foregroundColor: Colors.white, // Color del texto
+                      minimumSize: const Size(double.infinity, 50), // Botón ancho
+                    ),
+                    child: const Text('Guardar'),
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _showDeleteConfirmationDialog, // Mostrar diálogo de confirmación
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white, // Color del texto
+                      minimumSize: const Size(double.infinity, 50), // Botón ancho
+                    ),
+                    child: const Text('Eliminar Cuenta'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _usernameController,
-              decoration: const InputDecoration(
-                labelText: 'Nombre de Usuario',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Nombre Completo',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Correo Electrónico',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _passController,
-              decoration: const InputDecoration(
-                labelText: 'Contraseña',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true, // Para ocultar la contraseña
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _saveConfiguration, // Guardar configuración
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF89AFAF),
-              ),
-              child: const Text('Guardar'),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _showDeleteConfirmationDialog, // Mostrar diálogo de confirmación para eliminar
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red, // Rojo para indicar acción destructiva
-              ),
-              child: const Text('Eliminar Cuenta'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+    ),
+  );
+}
+
 }
