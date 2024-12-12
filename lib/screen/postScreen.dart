@@ -167,6 +167,7 @@ class _PostsScreenState extends State<PostsScreen> {
                         onPressed: () async {
                         // Llamar al método para crear el post
                         postController.createPost();
+                        postsListController.fetchPosts(); 
                         Navigator.of(context).pop();  // Cerrar el cuadro de diálogo después de crear el post
                         },
                         style: ElevatedButton.styleFrom(

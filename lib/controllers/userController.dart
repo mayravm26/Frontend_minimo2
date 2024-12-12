@@ -49,7 +49,7 @@ class UserController extends GetxController {
 
       print('el response data es:${ responseData}');
 
-      if (responseData != null) {
+      if (responseData == 200) {
         // Manejo de respuesta exitosa
         Get.snackbar('Éxito', 'Inicio de sesión exitoso');
         Text('Bienvenido, ${user.value?.name ?? "Cargando..."}');

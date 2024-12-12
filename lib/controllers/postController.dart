@@ -136,5 +136,6 @@ class PostController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+
   }
 }
